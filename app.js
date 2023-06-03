@@ -3,7 +3,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose=require("mongoose");
-const md5=require("md5");
+const bcrypt=require("bcrypt");
+const salt_rounds=10;
 
 const app = express();
 
@@ -40,12 +41,10 @@ const User= mongoose.model("User",userSchema);
 
 app.post('/register', async (req, res) => {
   try {
+    const password=await bcrypt.hash(req.body.password, salt_rounds);
     const { username, email } = req.body;
-    const password=md5(req.body.password);
     const user = new User({ username, email, password });
-
     await user.save();
-
     res.render("feed");
     } 
     catch (error) {
@@ -57,16 +56,16 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, res) => {
   try {
     const username_email = req.body.username_email;
-    const password=md5(req.body.password);
-
+    
     const user = await User.findOne({
       $or: [{ username: username_email }, { email: username_email }],
     });
+    const password_check=await bcrypt.compare(req.body.password, user.password);
 
     if (!user) {
       return res.status(401).json({ error: 'User doesn\'t exist' });
     }
-    if (user.password !== password){
+    if (!password_check){
       return res.status(402).json({ error: 'Invalid password' });     
     }
     res.render("feed");
