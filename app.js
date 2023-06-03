@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose=require("mongoose");
-const encrypt=require("mongoose-encryption");
+const md5=require("md5");
 
 const app = express();
 
@@ -36,14 +36,12 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.plugin(encrypt,{ secret:process.env.ENCRYPTION_KEY, encryptedFields:['password']});
-
-
 const User= mongoose.model("User",userSchema);
 
 app.post('/register', async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email } = req.body;
+    const password=md5(req.body.password);
     const user = new User({ username, email, password });
 
     await user.save();
@@ -58,16 +56,19 @@ app.post('/register', async (req, res) => {
 
 app.post('/login', async (req, res) => {
   try {
-    const { username_email, password } = req.body;
+    const username_email = req.body.username_email;
+    const password=md5(req.body.password);
 
     const user = await User.findOne({
       $or: [{ username: username_email }, { email: username_email }],
     });
 
-    if (!user || user.password !== password) {
-      return res.status(401).json({ error: 'Invalid username or password' });
+    if (!user) {
+      return res.status(401).json({ error: 'User doesn\'t exist' });
     }
-
+    if (user.password !== password){
+      return res.status(402).json({ error: 'Invalid password' });     
+    }
     res.render("feed");
     }
     catch (error) {
