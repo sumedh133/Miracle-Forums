@@ -28,17 +28,17 @@
             <form action="/login" method="POST">
                 <div class="input-box">
                     <span class="icon"><ion-icon name="mail-outline"></ion-icon></span>
-                    <input type="text" name="username_email" required>
+                    <input type="text" name="usernameOrEmail" required>
                     <label>E-mail/username</label>
                 </div>
                 <div class="input-box">
                     <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></ion-icon></span>
-                    <input type="password" name="password" required maxlength="20">
+                    <input type="password" name="password" required maxlength="20" id="typepass">
                     <label>Password</label>
                 </div>
                 <div class="remember-forgot">
-                    <label><input type="checkbox">Remember me</label>
-                    <a href="#">Forgot password?</a>
+                    <label><input name="rememberMe" value=1 type="checkbox">Remember me</label>
+                    <label for="show_pass"><input type="checkbox" onclick="Toggle()">Show password</label>  
                 </div>
                 <button type="submit" class="btn">Login</button>
                 <div class="login-register">
