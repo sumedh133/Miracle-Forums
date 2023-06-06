@@ -58,23 +58,31 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.get("/",function(req,res){
-  res.render("loginRegistration");
+  res.redirect("/checkAuth");
 });
 
-app.get("/feed",function(req,res){
+app.get("/checkAuth",function(req,res){
   if(req.isAuthenticated()){
-    res.render("feed");
+    res.redirect("/feed");
   }
   else{
-    res.redirect("/");
+    res.redirect("/loginRegistration");
   }
+});
+
+app.get('/feed', function(req, res) {
+  res.render("feed");
+});
+
+app.get('/loginRegistration', function(req, res) {
+  res.render("loginRegistration");
 });
 
 app.get('/logout', function(req, res, next) {
   //clicking on logout button will no longer accept the cookie as valid
   req.logout(function(err) {
     if (err) { return next(err); }
-    res.redirect('/');
+    res.redirect('/loginRegistration');
   });
 });
 
@@ -94,7 +102,7 @@ app.post('/register', (req, res) => {
     }
     else{
       passport.authenticate("local")(req,res,function(){
-        res.redirect("/feed");
+        res.redirect("/checkAuth");
       });
     }
   });
@@ -128,7 +136,7 @@ app.post('/login', (req, res) => {
               if(rememberMe)
               req.session.cookie.expires = new Date(Date.now() + 3600000*24*30);
             // if successful 
-              res.redirect("/feed");
+              res.redirect("/checkAuth");
             }
           });
         });
