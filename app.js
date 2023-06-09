@@ -1,10 +1,12 @@
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
+var User = require("./models/user.js");
 const ejs = require("ejs");
 const mongoose=require("mongoose");
 const session=require("express-session");
 const passport=require("passport");
+const LocalStrategy = require("passport-local");
 const passportLocalMongoose=require("passport-local-mongoose");
 
 const app = express();
@@ -35,119 +37,60 @@ mongoose.connect('mongodb://0.0.0.0/myapp', {
     console.error('Failed to connect to MongoDB', err);
 });
 
-const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    unique:true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-});
-
-userSchema.plugin(passportLocalMongoose);
-
-const User= mongoose.model("User",userSchema);
-
-passport.use(User.createStrategy());
+passport.use(new LocalStrategy(User.authenticate()));
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.get("/",function(req,res){
-  res.redirect("/checkAuth");
-});
 
-app.get("/checkAuth",function(req,res){
+
+app.get("/",function(req,res){
   if(req.isAuthenticated()){
-    res.redirect("/feed");
+    return res.redirect("/feed");
   }
   else{
-    res.redirect("/loginRegistration");
+    return res.redirect("/loginRegistration");
   }
 });
 
 app.get('/feed', function(req, res) {
-  res.render("feed");
+  return res.render("feed");
 });
 
 app.get('/loginRegistration', function(req, res) {
-  res.render("loginRegistration");
+  return res.render("loginRegistration");
 });
 
 app.get('/logout', function(req, res, next) {
   //clicking on logout button will no longer accept the cookie as valid
   req.logout(function(err) {
     if (err) { return next(err); }
-    res.redirect('/loginRegistration');
+    return res.redirect('/loginRegistration');
   });
 });
 
-app.post('/register', (req, res) => {
-  const { username, email, password } = req.body;
-  const newUser = new User({ username, email });
 
-  User.register(newUser, password, (err, user) => {
-    if (err) {
-      if (err.message.includes('username')) {
-        res.status(400).json({ message: 'Username is already taken' });
-      } else if (err.message.includes('email')) {
-        res.status(400).json({ message: 'Email is already taken' });
+app.post("/register", function(req, res){
+  // console.log(req.body.username);
+  // console.log(req.body.password);
+  User.register(new User({username: req.body.username,email: req.body.email}), req.body.password, function(err, user){
+      if(err){
+          console.log(err);
+          return res.status(400).json({ message: 'Error during registration' });
       }
-      console.error('Failed to register user', err);
-      res.status(500).json({ message: 'Failed to register user' });
-    }
-    else{
-      passport.authenticate("local")(req,res,function(){
-        res.redirect("/checkAuth");
+      passport.authenticate("local")(req, res, function(){
+          res.redirect("/feed");
       });
-    }
   });
 });
 
-app.post('/login', (req, res) => {
-  const { usernameOrEmail, password, rememberMe } = req.body;
 
-  // searching user by username or email
-  User.findOne({ $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }] })
-    .then((user) => {
-      if (!user) {
-        // Invalid username or email
-        res.status(401).json({ message: 'Invalid username or email' });
-      }
-
-      // authenticating the user using the provided password
-      user.authenticate(password)
-        .then((authenticated) => {
-          if (!authenticated) {
-            // invalid password
-            res.status(401).json({ message: 'Invalid password' });
-          }
-          // logging in the user
-          req.login(user, (err) => {
-            if (err) {
-              // error during login
-              console.error('Error during login', err);
-              res.status(500).json({ message: 'Error during login' });
-            }else{
-              if(rememberMe)
-              req.session.cookie.expires = new Date(Date.now() + 3600000*24*30);
-            // if successful 
-              res.redirect("/checkAuth");
-            }
-          });
-        });
-    })
-    .catch((err) => {
-      // Error during authentication
-      console.error('Error during authentication', err);
-      res.status(500).json({ message: 'Error during authentication' });
-    });
+app.post("/login", passport.authenticate("local",{
+  successRedirect: "/feed",
+  failureRedirect: "/loginRegistration"
+}), function(req, res){
+  
 });
-
 
 app.listen(5000, function() {
   //checking working port
