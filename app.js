@@ -56,8 +56,9 @@ app.get('/feed', function(req, res) {
   return res.render("feed");
 });
 
-app.get('/loginRegistration', function(req, res) {
-  return res.render("loginRegistration");
+app.get("/loginRegistration", function(req, res) {
+
+  res.render("loginRegistration");
 });
 
 app.get('/logout', function(req, res, next) {
@@ -93,12 +94,41 @@ app.post('/register', (req, res) => {
   });
 });
 
-app.post("/login", passport.authenticate("local",{
+/* app.post("/login", passport.authenticate("local",{
   successRedirect: "/",
   failureRedirect: "/loginRegistration"
 }), function(req, res){
-  
+
 });
+ */
+
+app.post("/login", function(req, res, next) {
+  passport.authenticate("local", function(err, user, info) {
+    if (err) {
+      console.error(err);
+      return res.redirect("/loginRegistration");
+    }
+    if (!user) {
+      var errorMessageLogin=info.message;
+      if (info.message === "Invalid username or email") {
+        return res.render("loginRegistration",{errorMessageLogin})
+      } else if (info.message === "Invalid password") {
+        return res.render("loginRegistration",{errorMessageLogin})
+      }
+      else{
+        console.log(info);
+      }
+    }
+    req.logIn(user, function(err) {
+      if (err) {
+        console.error(err);
+        return res.redirect("/loginRegistration");
+      }
+      return res.redirect("/");
+    });
+  })(req, res, next);
+});
+
 
 app.listen(5000, function() {
   //checking working port

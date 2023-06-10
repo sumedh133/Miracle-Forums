@@ -21,6 +21,8 @@
 
     <% if (typeof errorMessageRegistration !== 'undefined'){ %>
     <div class="wrapper active-popup active">
+    <% } else if (typeof errorMessageLogin !== 'undefined'){ %>
+    <div class="wrapper active-popup">
     <% } else { %>
     <div class="wrapper">
     <% } %>
@@ -44,6 +46,11 @@
                     <label><input name="rememberMe" value=1 type="checkbox">Remember me</label>
                     <label for="show_pass"><input type="checkbox" id="show_pass" name="show_pass" onclick="Toggle()">Show password</label>  
                 </div>
+                <% if (typeof errorMessageLogin !== 'undefined'){ %>
+                <div class="error">
+                    <p><%= errorMessageLogin %></p>
+                </div>
+                    <% } %>
                 <button type="submit" class="btn">Login</button>
                 <div class="login-register">
                     <p>

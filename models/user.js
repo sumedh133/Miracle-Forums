@@ -15,6 +15,10 @@ const UserSchema = new mongoose.Schema({
     password: String,
   });
 
-UserSchema.plugin(passportLocalMongoose, {usernameQueryFields: ["email"]});
+UserSchema.plugin(passportLocalMongoose, {usernameQueryFields: ["email"],
+errorMessages: {
+  IncorrectPasswordError: 'Invalid password',
+  IncorrectUsernameError: 'Invalid username or email',
+}});
 
 module.exports = mongoose.model("User", UserSchema);
