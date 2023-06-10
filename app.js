@@ -8,6 +8,7 @@ const session=require("express-session");
 const passport=require("passport");
 const LocalStrategy = require("passport-local");
 const passportLocalMongoose=require("passport-local-mongoose");
+const user = require("./models/user.js");
 
 const app = express();
 
@@ -53,7 +54,7 @@ app.get("/",function(req,res){
 });
 
 app.get('/feed', function(req, res) {
-  return res.render("feed");
+  return res.render("feed",{user_current});
 });
 
 app.get("/loginRegistration", function(req, res) {
@@ -94,13 +95,7 @@ app.post('/register', (req, res) => {
   });
 });
 
-/* app.post("/login", passport.authenticate("local",{
-  successRedirect: "/",
-  failureRedirect: "/loginRegistration"
-}), function(req, res){
-
-});
- */
+var user_current;
 
 app.post("/login", function(req, res, next) {
   passport.authenticate("local", function(err, user, info) {
@@ -110,7 +105,7 @@ app.post("/login", function(req, res, next) {
     }
     if (!user) {
       var errorMessageLogin=info.message;
-      if (info.message === "Invalid username or email") {
+      if (info.message === "Username or E-mail is not registered") {
         return res.render("loginRegistration",{errorMessageLogin})
       } else if (info.message === "Invalid password") {
         return res.render("loginRegistration",{errorMessageLogin})
@@ -124,6 +119,10 @@ app.post("/login", function(req, res, next) {
         console.error(err);
         return res.redirect("/loginRegistration");
       }
+      let rememberMe=req.body.rememberMe;
+      if(rememberMe)
+        req.session.cookie.expires = new Date(Date.now() + 3600000*24*30);
+      user_current=user.username;
       return res.redirect("/");
     });
   })(req, res, next);
