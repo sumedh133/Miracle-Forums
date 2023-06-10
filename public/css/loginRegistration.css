@@ -3,7 +3,6 @@
     padding: 0px;
     box-sizing: border-box;
     font-family: verdana, arial, helvetica, sans-serif;
-
 }
 body{
     display: flex;
@@ -222,6 +221,12 @@ header{
     border-bottom-left-radius: 20px;
     cursor: pointer;
     z-index: 1;
+}
+.error{
+    color: red;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 5px;
 }
 
 

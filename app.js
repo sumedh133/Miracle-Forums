@@ -43,7 +43,6 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 
-
 app.get("/",function(req,res){
   if(req.isAuthenticated()){
     return res.redirect("/feed");
@@ -69,24 +68,33 @@ app.get('/logout', function(req, res, next) {
   });
 });
 
+app.post('/register', (req, res) => {
+  const { username, email, password } = req.body;
+  const newUser = new User({ username, email });
 
-app.post("/register", function(req, res){
-  // console.log(req.body.username);
-  // console.log(req.body.password);
-  User.register(new User({username: req.body.username,email: req.body.email}), req.body.password, function(err, user){
-      if(err){
-          console.log(err);
-          return res.status(400).json({ message: 'Error during registration' });
+  User.register(newUser, password, (err, user) => {
+    if (err) {
+      var errorMessageRegistration;
+      if (err.message.includes('username')) {
+        errorMessageRegistration="Username is already taken"
+        return res.render("loginRegistration",{errorMessageRegistration})
+      } else if (err.message.includes('email')) {
+        errorMessageRegistration="E-mail is already taken"
+        return res.render("loginRegistration",{errorMessageRegistration})
       }
-      passport.authenticate("local")(req, res, function(){
-          res.redirect("/feed");
+      console.error('Failed to register user', err);
+      return res.status(500).json({ message: 'Failed to register user' });
+    }
+    else{
+      passport.authenticate("local")(req,res,function(){
+        return res.redirect("/");
       });
+    }
   });
 });
 
-
 app.post("/login", passport.authenticate("local",{
-  successRedirect: "/feed",
+  successRedirect: "/",
   failureRedirect: "/loginRegistration"
 }), function(req, res){
   

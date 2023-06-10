@@ -19,7 +19,11 @@
         </nav>
     </header>
 
+    <% if (typeof errorMessageRegistration !== 'undefined'){ %>
+    <div class="wrapper active-popup active">
+    <% } else { %>
     <div class="wrapper">
+    <% } %>
         <span class="icon-close">
             <ion-icon name="close-outline"></ion-icon>
         </span>
@@ -29,7 +33,7 @@
                 <div class="input-box">
                     <span class="icon"><ion-icon name="mail-outline"></ion-icon></span>
                     <input type="text" name="username" required>
-                    <label>Username</label>
+                    <label>Username/E-mail</label>
                 </div>
                 <div class="input-box">
                     <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></ion-icon></span>
@@ -38,7 +42,7 @@
                 </div>
                 <div class="remember-forgot">
                     <label><input name="rememberMe" value=1 type="checkbox">Remember me</label>
-                    <label for="show_pass"><input type="checkbox" onclick="Toggle()">Show password</label>  
+                    <label for="show_pass"><input type="checkbox" id="show_pass" name="show_pass" onclick="Toggle()">Show password</label>  
                 </div>
                 <button type="submit" class="btn">Login</button>
                 <div class="login-register">
@@ -70,6 +74,11 @@
                 <div class="remember-forgot">
                     <label><input type="checkbox" required>I agree to terms and conditions</label>
                 </div>
+                <% if (typeof errorMessageRegistration !== 'undefined'){ %>
+                <div class="error">
+                    <p><%= errorMessageRegistration %></p>
+                </div>
+                <% } %>
                 <button type="submit" class="btn">Register</button>
                 <div class="login-register">
                     <p>
