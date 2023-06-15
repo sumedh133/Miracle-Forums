@@ -1,4 +1,5 @@
 var mongoose = require("mongoose");
+const {postSchema}=require("./post.js");
 var passportLocalMongoose = require("passport-local-mongoose");
 
 const UserSchema = new mongoose.Schema({
@@ -12,7 +13,19 @@ const UserSchema = new mongoose.Schema({
       required: true,
       unique: true,
     },
-    password: String,
+    bio: {
+      type: String,
+      default: '',
+    },
+    profilePicture: {
+      type: String,
+      default: 'public/css/default-profile.png',
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+    posts: [postSchema],
   });
 
 UserSchema.plugin(passportLocalMongoose, {usernameQueryFields: ["email"],
@@ -21,4 +34,5 @@ errorMessages: {
   IncorrectUsernameError: 'Invalid username or email',
 }});
 
-module.exports = mongoose.model("User", UserSchema);
+const User= mongoose.model("User", UserSchema);
+exports.User=User;

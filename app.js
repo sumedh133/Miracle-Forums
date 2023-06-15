@@ -1,14 +1,13 @@
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
-var User = require("./models/user.js");
+var {User} = require("./models/user.js");
 const ejs = require("ejs");
 const mongoose=require("mongoose");
 const session=require("express-session");
 const passport=require("passport");
 const LocalStrategy = require("passport-local");
-const passportLocalMongoose=require("passport-local-mongoose");
-const user = require("./models/user.js");
+//req.user has login in user in it
 
 const app = express();
 
@@ -54,7 +53,7 @@ app.get("/",function(req,res){
 });
 
 app.get('/feed', function(req, res) {
-  return res.render("feed",{user_current});
+  return res.render("feed",{user: req.user});
 });
 
 app.get("/loginRegistration", function(req, res) {
@@ -95,7 +94,6 @@ app.post('/register', (req, res) => {
   });
 });
 
-var user_current;
 
 app.post("/login", function(req, res, next) {
   passport.authenticate("local", function(err, user, info) {
@@ -105,11 +103,9 @@ app.post("/login", function(req, res, next) {
     }
     if (!user) {
       var errorMessageLogin=info.message;
-      if (info.message === "Username or E-mail is not registered") {
+      if (info.message === "Invalid username or email" || info.message === "Invalid password") {
         return res.render("loginRegistration",{errorMessageLogin})
-      } else if (info.message === "Invalid password") {
-        return res.render("loginRegistration",{errorMessageLogin})
-      }
+      } 
       else{
         console.log(info);
       }
@@ -122,8 +118,7 @@ app.post("/login", function(req, res, next) {
       let rememberMe=req.body.rememberMe;
       if(rememberMe)
         req.session.cookie.expires = new Date(Date.now() + 3600000*24*30);
-      user_current=user.username;
-      return res.redirect("/");
+        return res.redirect("/");
     });
   })(req, res, next);
 });
