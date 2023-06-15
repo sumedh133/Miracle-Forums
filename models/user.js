@@ -1,5 +1,4 @@
 var mongoose = require("mongoose");
-const {postSchema}=require("./post.js");
 var passportLocalMongoose = require("passport-local-mongoose");
 
 const UserSchema = new mongoose.Schema({
@@ -25,7 +24,10 @@ const UserSchema = new mongoose.Schema({
       type: Date,
       default: Date.now,
     },
-    posts: [postSchema],
+    posts: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Post",
+    }],
   });
 
 UserSchema.plugin(passportLocalMongoose, {usernameQueryFields: ["email"],

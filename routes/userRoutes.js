@@ -1,0 +1,95 @@
+require("dotenv").config();
+const express = require("express");
+const bodyParser = require("body-parser");
+const ejs = require("ejs");
+const mongoose=require("mongoose");
+const session=require("express-session");
+const passport=require("passport");
+const LocalStrategy = require("passport-local");
+var {User} = require("C:/programming/visual code programs/wp project/models/user.js");
+
+const router = express.Router();
+
+router.get("/",function(req,res){
+  if(req.isAuthenticated()){
+    return res.redirect("/feed");
+  }
+  else{
+    return res.redirect("/loginRegistration");
+  }
+});
+
+router.get('/feed', function(req, res) {
+  return res.render("feed",{user: req.user});
+});
+
+router.get("/loginRegistration", function(req, res) {
+
+  res.render("loginRegistration");
+});
+
+router.get('/logout', function(req, res, next) {
+  //clicking on logout button will no longer accept the cookie as valid
+  req.logout(function(err) {
+    if (err) { return next(err); }
+    return res.redirect('/loginRegistration');
+  });
+});
+
+router.post('/register', (req, res) => {
+  const { username, email, password } = req.body;
+  const newUser = new User({ username, email });
+
+  User.register(newUser, password, (err, user) => {
+    if (err) {
+      var errorMessageRegistration;
+      if (err.message.includes('username')) {
+        errorMessageRegistration="Username is already taken"
+        return res.render("loginRegistration",{errorMessageRegistration})
+      } else if (err.message.includes('email')) {
+        errorMessageRegistration="E-mail is already taken"
+        return res.render("loginRegistration",{errorMessageRegistration})
+      }
+      console.error('Failed to register user', err);
+      return res.status(500).json({ message: 'Failed to register user' });
+    }
+    else{
+      passport.authenticate("local")(req,res,function(){
+        return res.redirect("/");
+      });
+    }
+  });
+});
+
+
+router.post("/login", function(req, res, next) {
+  passport.authenticate("local", function(err, user, info) {
+    if (err) {
+      console.error(err);
+      return res.redirect("/loginRegistration");
+    }
+    if (!user) {
+      var errorMessageLogin=info.message;
+      if (info.message === "Invalid username or email" || info.message === "Invalid password") {
+        return res.render("loginRegistration",{errorMessageLogin})
+      } 
+      else{
+        console.log(info);
+      }
+    }
+    req.logIn(user, function(err) {
+      if (err) {
+        console.error(err);
+        return res.redirect("/loginRegistration");
+      }
+      let rememberMe=req.body.rememberMe;
+      if(rememberMe)
+        req.session.cookie.expires = new Date(Date.now() + 3600000*24*30);
+        return res.redirect("/");
+    });
+  })(req, res, next);
+});
+
+module.exports=router;
+
+
