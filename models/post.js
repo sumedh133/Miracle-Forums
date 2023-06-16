@@ -1,24 +1,21 @@
 const mongoose = require("mongoose");
-const { User } = require("./user.js");
-const { Tag } = require("./tag.js");
-const { tagSchema } = require("./tag");
+const Joi = require("joi");
 
 const postSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
-    minlength: 10,
+    minlength: 5,
     maxlength: 80,
   },
-  tags: {
-    type: [tagSchema],
-    validate: {
-      validator: function (a) {
-        return a && a.length >= 0;
-      },
-    },
-    required: true,
-  },
+  tags: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Tag",
+  }],
+  tags_name:[{
+    type: String,
+    default:''
+  }],
   description: {
     type: String,
     required: true,
@@ -49,5 +46,15 @@ const postSchema = new mongoose.Schema({
 
 const Post = mongoose.model("Post", postSchema);
 
+function validatePost(post) {
+  const schema = Joi.object({
+    title: Joi.string().required().min(10).max(80),
+    description: Joi.string().required().min(3).max(1024),
+    tags: Joi.array(),
+  });
+  return schema.validate(post);
+}
+
 exports.postSchema = postSchema;
 exports.Post = Post;
+exports.validatePost = validatePost;

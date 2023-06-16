@@ -7,6 +7,8 @@ const session=require("express-session");
 const passport=require("passport");
 const LocalStrategy = require("passport-local");
 var {User} = require("C:/programming/visual code programs/wp project/models/user.js");
+const { Post, validatePost } = require("../models/post");
+const { Tag } = require("../models/tag");
 
 const router = express.Router();
 
@@ -89,6 +91,19 @@ router.post("/login", function(req, res, next) {
     });
   })(req, res, next);
 });
+
+router.get("/profile", async function (req, res) {
+  try {
+    const userId = req.user._id;
+
+    const posts = await Post.find({ author: userId });
+    res.render('userProfile', { user:req.user, posts});
+  } catch (err) {
+    console.log('Error retrieving user profile:', err);
+    res.status(500).send('An error occurred while retrieving the user profile.');
+  }
+});
+
 
 module.exports=router;
 

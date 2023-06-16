@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Joi = require("joi");
 
 const replySchema = new mongoose.Schema({
   post: {
@@ -30,4 +31,12 @@ const replySchema = new mongoose.Schema({
 
 const Reply = mongoose.model("Reply", replySchema);
 
+function validateReply(reply) {
+  const schema = Joi.object({
+    comment: Joi.string().required().min(3).max(5000),
+  });
+  return schema.validate(reply);
+};
+
+exports.validateReply = validateReply;
 exports.Reply = Reply;

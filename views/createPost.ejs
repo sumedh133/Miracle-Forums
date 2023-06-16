@@ -1,0 +1,22 @@
+<!-- createPost.ejs -->
+
+<h1>Create a New Post</h1>
+
+<form action="/create" method="POST">
+  <div>
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" required>
+  </div>
+  <div>
+    <label for="tags">Tags:</label>
+    <input type="text" id="tags" name="tags" required>
+    <p>Enter comma-separated tags (e.g., tag1, tag2, tag3)</p>
+  </div>
+  <div>
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" required></textarea>
+  </div>
+  <div>
+    <button type="submit">Create Post</button>
+  </div>
+</form>

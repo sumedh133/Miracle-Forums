@@ -42,10 +42,10 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 
-
+const postRoutes = require("./routes/postRoutes.js");
 const userRoutes = require("./routes/userRoutes.js");
 app.use('/', userRoutes);
-
+app.use("/",postRoutes);
 
 
 app.listen(5000, function() {
