@@ -16,7 +16,19 @@
         <a href="/exploreTags" target=”_blank” role="button">Explore Tags</a>
     </header>
     <div>
-        
+        <h1>User Feed</h1>
+            <ul>
+                <% for (let i = 0; i < feed.length; i++) { %>
+                <li>
+                    <h3><%= feed[i].title %></h3>
+                    <p><%= feed[i].description %></p>
+                    <p>Author: <%= feed[i].author.username %></p>
+                    <p>Tags: <%= feed[i].tags_name.join(', ') %></p>
+                    <p>Views: <%= feed[i].views %></p>
+                    <p>Upvotes: <%= feed[i].upvotes.length %></p>
+                </li>
+                <% } %>
+            </ul>
     </div>
 </body>
 </html>
