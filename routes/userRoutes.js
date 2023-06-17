@@ -22,11 +22,11 @@ router.get("/",function(req,res){
 });
 
 router.get('/feed', function(req, res) {
+
   return res.render("feed",{user: req.user});
 });
 
 router.get("/loginRegistration", function(req, res) {
-
   res.render("loginRegistration");
 });
 
@@ -95,7 +95,6 @@ router.post("/login", function(req, res, next) {
 router.get("/profile", async function (req, res) {
   try {
     const userId = req.user._id;
-
     const posts = await Post.find({ author: userId });
     res.render('userProfile', { user:req.user, posts});
   } catch (err) {
@@ -103,7 +102,6 @@ router.get("/profile", async function (req, res) {
     res.status(500).send('An error occurred while retrieving the user profile.');
   }
 });
-
 
 module.exports=router;
 

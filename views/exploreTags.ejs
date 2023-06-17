@@ -1,0 +1,9 @@
+<form action="exploreTags" method="POST">
+    <% tags.forEach(tag => { %>
+      <div>
+        <input type="checkbox" name="tags" value="<%= tag.name %>">
+        <label><%= tag.name %></label>
+      </div>
+    <% }); %>
+    <button type="submit">Save preferred tags</button>
+</form>

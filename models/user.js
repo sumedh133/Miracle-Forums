@@ -28,6 +28,10 @@ const UserSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "Post",
     }],
+    preferredTags: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Tag",
+    }]
   });
 
 UserSchema.plugin(passportLocalMongoose, {usernameQueryFields: ["email"],

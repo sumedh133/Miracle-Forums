@@ -32,9 +32,7 @@ router.post("/create", async (req, res) => {
       await tag.save();
       post.tags.push(tag._id);
     }
-
     await post.save();
-
     const user = await User.findById(req.user._id);
     user.posts.push(post._id);
     await user.save();
@@ -45,6 +43,8 @@ router.post("/create", async (req, res) => {
     res.status(500).send("An error occurred while creating the post.");
   }
 });
+
+
 
 module.exports = router;
 

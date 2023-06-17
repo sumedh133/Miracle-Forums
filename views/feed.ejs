@@ -5,12 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="css/feed.css">
 </head>
 <body>
-    Feed Page
-    <a href="/logout" role="button">Logout</a>
-    <p>user is <%= user.username %></p>
-    <a href="/create" role="button">create post</a>
-    <a href="/profile" role="button">user profile</a>
+    <header>
+        <a href="/logout" role="button">Logout</a>
+        <p>username:<%= user.username %></p>
+        <a href="/create" role="button">create post</a>
+        <a href="/profile" role="button">user profile</a>
+        <a href="/exploreTags" target=”_blank” role="button">Explore Tags</a>
+    </header>
+    <div>
+        
+    </div>
 </body>
 </html>

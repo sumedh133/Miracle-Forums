@@ -44,9 +44,10 @@ passport.deserializeUser(User.deserializeUser());
 
 const postRoutes = require("./routes/postRoutes.js");
 const userRoutes = require("./routes/userRoutes.js");
+const tagRoutes = require("./routes/tagRoutes.js");
 app.use('/', userRoutes);
 app.use("/",postRoutes);
-
+app.use("/",tagRoutes);
 
 app.listen(5000, function() {
     //checking working port
