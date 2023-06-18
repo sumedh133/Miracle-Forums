@@ -1,0 +1,27 @@
+ <h1>Tags which you havent saved:</h1>
+ 
+ <form action="/saveTags" method="POST">
+    <% tags.forEach(tag => { %>
+      <div>
+        <input type="checkbox" name="tags" value="<%= tag._id %>">
+        <label><a href="/viewTagPosts/<%= tag._id %>"><%= tag.name %></a></label>
+      </div>
+    <% }); %>
+    <button type="submit">Save preferred tags</button>
+  </form>
+  <br><br>
+
+  <h1>Saved Tags</h1> 
+  <form action="/removeTags" method="POST">
+    <% sTags.forEach(sTag => { %>
+      <div>
+        <input type="checkbox" name="stags" value="<%= sTag._id %>" >
+        <label><a href="/viewTagPosts/<%= sTag._id %>"><%= sTag.name %></a></label>
+      </div>
+    <% }); %>
+    <button type="submit">Remove checked tags</button>
+  </form>
+
+
+
+

@@ -1,0 +1,32 @@
+<!-- tagPosts.ejs -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tag Posts</title>
+</head>
+<body>
+    <h1>Posts associated with tag:<%= tag.name %></h1>
+    <% if(check){%>
+    <form action="/removeTag/<%= tag._id %>" method="POST">
+        <button type="submit">Remove tag</button>
+    </form>
+    <% } else { %>   
+    <form action="/saveTag/<%= tag._id %>" method="POST">
+        <button type="submit">Save tag</button>
+    </form>
+    <% }%>
+    <ul>
+        <% for (let i = 0; i < posts.length; i++) { %>
+        <li>
+            <h3><%= posts[i].title %></h3>
+            <p><%= posts[i].description %></p>
+            <p>Author: <%= posts[i].author.username %></p>
+            <p>Tags: <%= posts[i].tags_name.join(', ') %></p>
+            <p>Views: <%= posts[i].views %></p>
+            <p>Upvotes: <%= posts[i].upvotes.length %></p>
+        </li>
+        <% } %>
+    </ul>
+</body>
+</html>
