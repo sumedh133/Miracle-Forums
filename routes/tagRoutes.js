@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const _ = require("lodash");
-const { Post, validatePost } = require("../models/post");
-const { Reply, validateReply } = require("../models/replies");
+const { Post } = require("../models/post");
 const { User } = require("../models/user");
 const { Tag } = require("../models/tag");
 const mongoose=require("mongoose")
