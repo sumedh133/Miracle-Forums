@@ -9,8 +9,10 @@
   </div>
   <div>
     <label for="tags">Tags:</label>
-    <input type="text" id="tags" name="tags" required>
+    <input type="text" id="tagInput" name="tags" required>
+    <div id="tagSuggestions"></div>
     <p>Enter comma-separated tags (e.g., tag1, tag2, tag3)</p>
+    <p>If the tag you want is not present already then it will be created for you</p>
   </div>
   <div>
     <label for="description">Description:</label>
@@ -20,3 +22,33 @@
     <button type="submit">Create Post</button>
   </div>
 </form>
+
+<script>
+  const tagInput = document.getElementById('tagInput');
+  const tagSuggestions = document.getElementById('tagSuggestions');
+  
+  tagInput.addEventListener('input', async (event) => {
+    const enteredText = event.target.value;
+    const tags = enteredText.split(',').map((tag) => tag.trim());
+    const currentTagFragment = tags[tags.length - 1]; 
+  
+    tagSuggestions.innerHTML = '';
+  
+    if (currentTagFragment.length > 0) {
+      const response = await fetch(`/tag/suggestions?searchText=${currentTagFragment}`);
+      const matchedTags = await response.json();
+  
+      matchedTags.forEach((matchedTag) => {
+        const suggestion = document.createElement('div');
+        suggestion.textContent = matchedTag.name;
+        suggestion.addEventListener('click', () => {
+          const updatedTags = tags.slice(0, -1).concat(matchedTag.name).join(', ');
+          tagInput.value = updatedTags; 
+          tagSuggestions.innerHTML = ''; 
+        });
+        tagSuggestions.appendChild(suggestion);
+      });
+    }
+  });
+  
+</script>
