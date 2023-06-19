@@ -12,7 +12,12 @@ const tagSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Post",
     default:[]
-  }]
+  }],
+  users:{
+    type:Number,
+    default:0,
+    min:0
+  }
 });
 
 const Tag = mongoose.model("Tag", tagSchema);

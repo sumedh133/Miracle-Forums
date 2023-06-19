@@ -25,13 +25,19 @@ router.post("/saveTags", async (req, res) => {
     try {
       const user = await User.findById(req.user._id);
       const selectedTags = await Tag.find({ _id: { $in: req.body.tags } });
+      selectedTags.users=selectedTags.users+1;
       if (Array.isArray(selectedTags)) {
         const ids = selectedTags.map(tag => tag._id);
         user.preferredTags.push(...ids);
+        selectedTags.forEach(tag => {
+            tag.users = tag.users + 1;
+        });
       } else {
         user.preferredTags.push(selectedTags._id);
+        selectedTags.users = selectedTags.users + 1;
       }
       await user.save();
+      await Promise.all(selectedTags.map(tag => tag.save()));
       return res.status(500).json({ message: 'Successfully saved preferred tags' });
     } catch (err) {
       console.log(err);
@@ -48,12 +54,17 @@ router.post("/removeTags", async (req,res)=>{
         {
             const ids = selectedTags.map(tag => tag._id);
             user.preferredTags.pull(...ids);
+            selectedTags.forEach(tag => {
+                tag.users = tag.users - 1;
+            });
         }
         else
         {
             user.preferredTags.pull(selectedTags._id);
+            selectedTags.users = selectedTags.users - 1;
         }
         await user.save();
+        await Promise.all(selectedTags.map(tag => tag.save()));
         return res.status(500).json({ message: 'Successfully removed from preferred tags' });
     }
     catch(err){
@@ -64,15 +75,15 @@ router.post("/removeTags", async (req,res)=>{
 
 router.get("/viewTagPosts/:tagId", async (req, res) => {
     try {
-      const tagId = req.params.tagId;
-      const posts = await Post.find({ tags: tagId });
-      const tag= await Tag.findById(tagId);
-      const user=await User.findById(req.user._id);
-      const check = user.preferredTags.includes(tag._id);
-      res.render("tagPosts", { posts,tag,check });
+        const tagId = req.params.tagId;
+        const posts = await Post.find({ tags: tagId });
+        const tag= await Tag.findById(tagId);
+        const user=await User.findById(req.user._id);
+        const check = user.preferredTags.includes(tag._id);
+        res.render("tagPosts", { posts,tag,check });
     } catch (err) {
-      console.error(err);
-      return res.status(500).json({ message: "Failed to retrieve tag posts" });
+        console.error(err);
+        return res.status(500).json({ message: "Failed to retrieve tag posts" });
     }
 });
 
@@ -80,6 +91,9 @@ router.post("/saveTag/:tagId", async (req, res) => {
     try{
         const tagId = req.params.tagId;
         const user=await User.findById(req.user._id);
+        const tag=await Tag.findById(tagId);
+        tag.users=tag.users+1;
+        await tag.save();
         user.preferredTags.push(tagId);
         await user.save();
         return res.json({ message: "Tag saved successfully" });
@@ -95,6 +109,9 @@ router.post("/removeTag/:tagId", async (req, res) => {
     try{
         const tagId = req.params.tagId;
         const user=await User.findById(req.user._id);
+        const tag=await Tag.findById(tagId);
+        tag.users=tag.users-1;
+        await tag.save();
         user.preferredTags.pull(tagId);
         await user.save();
         return res.json({ message: "Tag removed successfully" });
