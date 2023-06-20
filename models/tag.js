@@ -16,7 +16,6 @@ const tagSchema = new mongoose.Schema({
   users:{
     type:Number,
     default:0,
-    min:0
   }
 });
 

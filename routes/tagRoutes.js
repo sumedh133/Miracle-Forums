@@ -3,24 +3,53 @@ const router = express.Router();
 const { Post } = require("../models/post");
 const { User } = require("../models/user");
 const { Tag } = require("../models/tag");
-const mongoose=require("mongoose")
 
 router.get('/manageTags', async (req, res) => {
     try {
-        const user = await User.findById(req.user._id);
-        const preferredTags = user.preferredTags;
-        const allTags = await Tag.find();
-        var availableTags=[];
-        var savedTags=[];
-        availableTags = allTags.filter(tag => !preferredTags.includes(tag._id));
-        savedTags= allTags.filter(tag=> preferredTags.includes(tag._id));
-        return res.render('manageTags', { tags: availableTags, sTags:savedTags });
+      const user = await User.findById(req.user._id);
+      const preferredTags = user.preferredTags;
+  
+      const tags = await Tag.find().lean();
+  
+      const tagsWithCounts = tags.map(tag => {
+        const postCount = tag.posts.length;
+        const userCount = tag.users;
+        return { ...tag, postCount, userCount };
+      });
+  
+      const savedSortOption = req.query.savedSort || 'recentSaved'; // Get the sort option for saved tags from query parameter, defaulting to 'recentSaved'
+      const unsavedSortOption = req.query.unsavedSort || 'recentUnsaved'; // Get the sort option for unsaved tags from query parameter, defaulting to 'recentUnsaved'
+  
+      let availableTags = tagsWithCounts.filter(tag => !preferredTags.includes(tag._id));
+      let savedTags = tagsWithCounts.filter(tag => preferredTags.includes(tag._id));
+  
+      if (savedSortOption === 'posts') {
+        savedTags = savedTags.sort((a, b) => b.postCount - a.postCount);
+      } else if (savedSortOption === 'users') {
+        savedTags = savedTags.sort((a, b) => b.userCount - a.userCount);
+      } else {
+        // Default to sorting by most recent for saved tags
+        savedTags = savedTags.reverse();
+      }
+  
+      if (unsavedSortOption === 'posts') {
+        availableTags = availableTags.sort((a, b) => b.postCount - a.postCount);
+      } else if (unsavedSortOption === 'users') {
+        availableTags = availableTags.sort((a, b) => b.userCount - a.userCount);
+      } else {
+        // Default to sorting by most recent for unsaved tags
+        availableTags = availableTags.reverse();
+      }
+  
+      return res.render('manageTags', { tags: availableTags, sTags: savedTags, savedSortOption, unsavedSortOption });
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: 'Failed to fetch tags' });
+      console.error(error);
+      return res.status(500).json({ message: 'Failed to fetch tags' });
     }
-});
-
+  });
+  
+  
+  
 router.post("/saveTags", async (req, res) => {
     try {
       const user = await User.findById(req.user._id);
