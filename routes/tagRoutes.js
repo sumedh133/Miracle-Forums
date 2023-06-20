@@ -152,7 +152,18 @@ router.post("/removeTag/:tagId", async (req, res) => {
     }
 });
 
-
+router.get('/suggestedTags', async (req, res) => {
+  try {
+    const input = req.query.input;
+    // Perform the tag suggestion logic here
+    // Fetch the suggested tags based on the input and send the response
+    const suggestedTags = await Tag.find({ name: { $regex: input, $options: 'i' } }).lean();
+    return res.json(suggestedTags);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Failed to fetch suggested tags' });
+  }
+});
 
 module.exports = router;
 

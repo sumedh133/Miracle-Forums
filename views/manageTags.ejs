@@ -1,3 +1,9 @@
+<div>
+  <label>Search Tags:</label>
+  <input type="text" id="tagInput" onkeyup="handleTagSuggestion(event)">
+  <ul id="suggestedTags"></ul>
+</div>
+<br><hr><br>
 <h1>Tags which you haven't saved:</h1>
 <div>
   <label>Sort by:</label>
@@ -56,5 +62,35 @@
     const url = new URL(window.location.href);
     url.searchParams.set('unsavedSort', selectedOption);
     window.location.href = url.toString();
+  }
+
+  function handleTagSuggestion(event) {
+    const input = event.target.value.trim();
+    const suggestedTagsContainer = document.getElementById('suggestedTags');
+
+    // Clear the suggestion list
+    suggestedTagsContainer.innerHTML = '';
+
+    if (input.length === 0) {
+      return;
+    }
+
+    // Fetch suggested tags from the server
+    fetch(`/suggestedTags?input=${input}`)
+      .then(response => response.json())
+      .then(data => {
+        // Display the suggested tags in the list
+        data.forEach(tag => {
+          const listItem = document.createElement('li');
+          const tagLink = document.createElement('a');
+          tagLink.href = `/viewTagPosts/${tag._id}`;
+          tagLink.textContent = tag.name;
+          listItem.appendChild(tagLink);
+          suggestedTagsContainer.appendChild(listItem);
+        });
+      })
+      .catch(error => {
+        console.error('Failed to fetch suggested tags:', error);
+      });
   }
 </script>
