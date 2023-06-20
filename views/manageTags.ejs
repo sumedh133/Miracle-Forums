@@ -21,7 +21,7 @@
       <label><a href="/viewTagPosts/<%= tag._id %>"><%= tag.name %></a> Posts: <%= tag.postCount %>, Users: <%= tag.userCount %></label>
     </div>
   <% }); %>
-  <button type="submit">Save preferred tags</button>
+  <button id="saveButton" type="submit">Save preferred tags</button>
 </form>
 <br><br>
 
@@ -44,7 +44,7 @@
       <label><a href="/viewTagPosts/<%= sTag._id %>"><%= sTag.name %></a>Posts: <%= sTag.postCount %>, Users: <%= sTag.userCount %></label>
     </div>
   <% }); %>
-  <button type="submit">Remove checked tags</button>
+  <button id="removeButton" type="submit">Remove checked tags</button>
 </form>
 
 <script>
@@ -63,6 +63,17 @@
     url.searchParams.set('unsavedSort', selectedOption);
     window.location.href = url.toString();
   }
+
+  const saveButton = document.getElementById('saveButton');
+  saveButton.addEventListener('click', ()=> {
+    alert("Tag(s) saved successfully");
+  });
+
+  const removeButton = document.getElementById('removeButton');
+  removeButton.addEventListener('click', ()=> {
+    alert("Tag(s) removed successfully");
+  });
+  
 
   function handleTagSuggestion(event) {
     const input = event.target.value.trim();
