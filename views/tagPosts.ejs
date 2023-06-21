@@ -1,21 +1,18 @@
 <!-- tagPosts.ejs -->
-
-<!DOCTYPE html>
-<html>
 <head>
   <title>Tag Posts</title>
 </head>
 <body>
-    <h1>Posts associated with tag:<%= tag.name %></h1>
-    <% if(check){%>
-    <form action="/removeTag/<%= tag._id %>" method="POST">
+    <h1>Posts associated with tag: <%= tag.name %></h1>
+    <% if (check) { %>
+    <form class="tagForm" id="removeButtonForm" action="/removeTag/<%= tag._id %>" method="POST">
         <button type="submit">Remove tag</button>
     </form>
     <% } else { %>   
-    <form action="/saveTag/<%= tag._id %>" method="POST">
+    <form class="tagForm" id="saveButtonForm" action="/saveTag/<%= tag._id %>" method="POST">
         <button type="submit">Save tag</button>
     </form>
-    <% }%>
+    <% } %>
     <ul>
         <% for (let i = 0; i < posts.length; i++) { %>
         <li>
@@ -29,4 +26,4 @@
         <% } %>
     </ul>
 </body>
-</html>
+<script src="/javascript/tagPosts.js"></script>

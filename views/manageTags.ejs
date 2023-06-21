@@ -14,14 +14,14 @@
   </select>
 </div>
 
-<form action="/saveTags" method="POST">
+<form action="/saveTags" method="POST" id="saveButton" onsubmit="return validateSaveTags()">
   <% tags.forEach(tag => { %>
     <div>
       <input type="checkbox" name="tags" value="<%= tag._id %>">
       <label><a href="/viewTagPosts/<%= tag._id %>"><%= tag.name %></a> Posts: <%= tag.postCount %>, Users: <%= tag.userCount %></label>
     </div>
   <% }); %>
-  <button id="saveButton" type="submit">Save preferred tags</button>
+  <button type="submit">Save preferred tags</button>
 </form>
 <br><br>
 
@@ -37,71 +37,14 @@
   </select>
 </div>
 
-<form action="/removeTags" method="POST">
+<form action="/removeTags" id="removeButton" method="POST" onsubmit="return validateRemoveTags()">
   <% sTags.forEach(sTag => { %>
     <div>
       <input type="checkbox" name="stags" value="<%= sTag._id %>">
       <label><a href="/viewTagPosts/<%= sTag._id %>"><%= sTag.name %></a>Posts: <%= sTag.postCount %>, Users: <%= sTag.userCount %></label>
     </div>
   <% }); %>
-  <button id="removeButton" type="submit">Remove checked tags</button>
+  <button  type="submit">Remove checked tags</button>
 </form>
 
-<script>
-  // Function to handle the change event of the saved tags sort option
-  function handleSavedSortChange() {
-    const selectedOption = document.getElementById('savedSortOption').value;
-    const url = new URL(window.location.href);
-    url.searchParams.set('savedSort', selectedOption);
-    window.location.href = url.toString();
-  }
-
-  // Function to handle the change event of the unsaved tags sort option
-  function handleUnsavedSortChange() {
-    const selectedOption = document.getElementById('unsavedSortOption').value;
-    const url = new URL(window.location.href);
-    url.searchParams.set('unsavedSort', selectedOption);
-    window.location.href = url.toString();
-  }
-
-  const saveButton = document.getElementById('saveButton');
-  saveButton.addEventListener('click', ()=> {
-    alert("Tag(s) saved successfully");
-  });
-
-  const removeButton = document.getElementById('removeButton');
-  removeButton.addEventListener('click', ()=> {
-    alert("Tag(s) removed successfully");
-  });
-  
-
-  function handleTagSuggestion(event) {
-    const input = event.target.value.trim();
-    const suggestedTagsContainer = document.getElementById('suggestedTags');
-
-    // Clear the suggestion list
-    suggestedTagsContainer.innerHTML = '';
-
-    if (input.length === 0) {
-      return;
-    }
-
-    // Fetch suggested tags from the server
-    fetch(`/suggestedTags?input=${input}`)
-      .then(response => response.json())
-      .then(data => {
-        // Display the suggested tags in the list
-        data.forEach(tag => {
-          const listItem = document.createElement('li');
-          const tagLink = document.createElement('a');
-          tagLink.href = `/viewTagPosts/${tag._id}`;
-          tagLink.textContent = tag.name;
-          listItem.appendChild(tagLink);
-          suggestedTagsContainer.appendChild(listItem);
-        });
-      })
-      .catch(error => {
-        console.error('Failed to fetch suggested tags:', error);
-      });
-  }
-</script>
+<script src="/javascript/manageTags.js"></script>

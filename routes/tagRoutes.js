@@ -124,7 +124,7 @@ router.post("/saveTag/:tagId", async (req, res) => {
         await tag.save();
         user.preferredTags.push(tagId);
         await user.save();
-        return res.json({ message: "Tag saved successfully" });
+        return res.redirect("/viewTagPosts/"+tagId);
     }
     catch(err)
     {
@@ -142,7 +142,7 @@ router.post("/removeTag/:tagId", async (req, res) => {
         await tag.save();
         user.preferredTags.pull(tagId);
         await user.save();
-        return res.json({ message: "Tag removed successfully" });
+        return res.redirect("/viewTagPosts/"+tagId);
     }
     catch(err)
     {
