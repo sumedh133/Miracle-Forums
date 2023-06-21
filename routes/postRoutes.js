@@ -5,6 +5,27 @@ const { Comment } = require("../models/comment");
 const { User } = require("../models/user");
 const { Tag } = require("../models/tag");
 
+router.get('/feed', async function(req, res) {
+  try {
+    // Retrieve the user's preferred tags
+    const user = await User.findById(req.user._id).populate("preferredTags");
+    const preferredTags = user.preferredTags.map((tag) => tag._id);
+
+    // Find posts with at least one of the preferred tags
+    const posts = await Post.find({ tags: { $in: preferredTags } })
+      .populate("tags")
+      .sort({ time: -1 }) // Sort by date, descending order
+      .populate("author");
+
+    console.log(posts[0].tags);
+
+    return res.render("feed", { feed: posts,user });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Failed to retrieve user feed" });
+  }
+});
+
 router.get("/create", function (req, res) {
     res.render("createPost");
 });
@@ -57,7 +78,16 @@ router.get('/tag/suggestions', async (req, res) => {
   }
 });
 
-
+router.get("/viewPost/:postId", async function (req, res) {
+  try {
+    const postId = req.params.postId;
+    const post = await Post.findById(postId);
+    return res.render("viewPost", { post });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Error" });
+}
+});
 module.exports = router;
 
   

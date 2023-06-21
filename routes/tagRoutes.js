@@ -104,7 +104,7 @@ router.post("/removeTags", async (req,res)=>{
 router.get("/viewTagPosts/:tagId", async (req, res) => {
     try {
         const tagId = req.params.tagId;
-        const posts = await Post.find({ tags: tagId });
+        const posts = await Post.find({ tags: tagId }).populate("tags");
         const tag= await Tag.findById(tagId);
         const user=await User.findById(req.user._id);
         const check = user.preferredTags.includes(tag._id);

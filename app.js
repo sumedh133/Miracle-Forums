@@ -45,7 +45,7 @@ passport.deserializeUser(User.deserializeUser());
 const postRoutes = require("./routes/postRoutes.js");
 const userRoutes = require("./routes/userRoutes.js");
 const tagRoutes = require("./routes/tagRoutes.js");
-app.use('/', userRoutes);
+app.use("/",userRoutes);
 app.use("/",postRoutes);
 app.use("/",tagRoutes);
 

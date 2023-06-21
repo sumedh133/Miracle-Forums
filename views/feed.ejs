@@ -10,20 +10,25 @@
 <body>
     <header>
         <a href="/logout" role="button">Logout</a>
-        <p>username:<%= user.username %></p>
+        <p>username: <%= user.username %></p>
         <a href="/create" role="button">create post</a>
         <a href="/profile" role="button">user profile</a>
         <a href="/manageTags" role="button">Manage Tags</a>
     </header>
-    <div>
+    <div class="feed">
         <h1>User Feed</h1>
             <ul>
                 <% for (let i = 0; i < feed.length; i++) { %>
                 <li>
-                    <h3><%= feed[i].title %></h3>
+                    <h3><a href="/viewPost/<%= feed[i]._id %>"><%= feed[i].title %></a></h3>
                     <p><%= feed[i].description %></p>
                     <p>Author: <%= feed[i].author.username %></p>
-                    <p>Tags: <%= feed[i].tags_name.join(', ') %></p>
+                    <p>Tags:
+                        <% for (let j = 0; j < feed[i].tags.length; j++) { %>
+                            <a href="/viewTagPosts/<%= feed[i].tags[j]._id %>"><%= feed[i].tags[j].name %></a>
+                            <% if (j !== feed[i].tags.length - 1) { %>, <% } %>
+                        <% } %>
+                    </p>
                     <p>Views: <%= feed[i].views %></p>
                     <p>Upvotes: <%= feed[i].upvotes.length %></p>
                 </li>

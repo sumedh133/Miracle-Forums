@@ -19,7 +19,12 @@
             <h3><%= posts[i].title %></h3>
             <p><%= posts[i].description %></p>
             <p>Author: <%= posts[i].author.username %></p>
-            <p>Tags: <%= posts[i].tags_name.join(', ') %></p>
+            <p>Tags: 
+                <% for (let j = 0; j < posts[i].tags.length; j++) { %>
+                    <a href="/viewTagPosts/<%= posts[i].tags[j]._id %>"><%= posts[i].tags[j].name %></a>
+                    <% if (j !== posts[i].tags.length - 1) { %>, <% } %>
+                <% } %>
+            </p>
             <p>Views: <%= posts[i].views %></p>
             <p>Upvotes: <%= posts[i].upvotes.length %></p>
         </li>
