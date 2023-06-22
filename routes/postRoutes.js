@@ -16,10 +16,19 @@ router.get('/feed', async function(req, res) {
       .populate("tags")
       .sort({ time: -1 }) // Sort by date, descending order
       .populate("author");
-
-    console.log(posts[0].tags);
-
-    return res.render("feed", { feed: posts,user });
+      var checkUp=[];
+      var checkDown=[];
+      posts.forEach(post=>{
+        if(post.upvotes.includes(user._id))
+          checkUp.push(1);
+        else
+        checkUp.push(0);
+        if(post.downvotes.includes(user._id))
+          checkDown.push(1);
+        else
+        checkDown.push(0);
+      });
+    return res.render("feed", { feed: posts,user,checkUp,checkDown });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Failed to retrieve user feed" });
@@ -88,6 +97,73 @@ router.get("/viewPost/:postId", async function (req, res) {
     return res.status(500).json({ message: "Error" });
 }
 });
+
+// Upvote a post
+router.post('/posts/:postId/upvote', async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    const userId = req.user._id;
+
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    const isUpvoted = post.upvotes.includes(userId);
+
+    if (isUpvoted) {
+      post.upvotes.pull(userId);
+    } else {
+      if (post.downvotes.includes(userId)) {
+        post.downvotes.pull(userId);
+      }
+      post.upvotes.push(userId);
+    }
+    post.votes = post.upvotes.length - post.downvotes.length;
+
+    await post.save();
+
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Failed to update post vote' });
+  }
+});
+
+// Downvote a post
+router.post('/posts/:postId/downvote', async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    const userId = req.user._id;
+
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    const isDownvoted = post.downvotes.includes(userId);
+
+    if (isDownvoted) {
+      post.downvotes.pull(userId);
+    } else {
+      if (post.upvotes.includes(userId)) {
+        post.upvotes.pull(userId);
+      }
+
+      post.downvotes.push(userId);
+    }
+
+    post.votes = post.upvotes.length - post.downvotes.length;
+
+    await post.save();
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Failed to update post vote' });
+  }
+});
+
+
 module.exports = router;
 
   

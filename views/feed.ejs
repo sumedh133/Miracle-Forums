@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="css/feed.css">
+    <link rel="stylesheet" href="/css/feed.css">
 </head>
 <body>
     <header>
@@ -29,11 +29,23 @@
                             <% if (j !== feed[i].tags.length - 1) { %>, <% } %>
                         <% } %>
                     </p>
-                    <p>Views: <%= feed[i].views %></p>
-                    <p>Upvotes: <%= feed[i].upvotes.length %></p>
+                    <p>Votes: <span id="voteCount_<%= feed[i]._id %>"><%= feed[i].votes %></span></p>
+                    <div>
+                        <% if(checkUp[i]==1) { %>
+                            <button id="upvoteButton_<%= feed[i]._id %>" class="upvoted" onclick="upvote('<%= feed[i]._id %>')">Upvote</button>
+                        <% } else { %>
+                            <button id="upvoteButton_<%= feed[i]._id %>" onclick="upvote('<%= feed[i]._id %>')">Upvote</button>
+                        <% } %>
+                        <% if(checkDown[i]==1) { %>
+                            <button id="downvoteButton_<%= feed[i]._id %>" class="downvoted" onclick="downvote('<%= feed[i]._id %>')">Downvote</button>
+                        <% } else { %>
+                            <button id="downvoteButton_<%= feed[i]._id %>" onclick="downvote('<%= feed[i]._id %>')">Downvote</button>
+                        <% } %>
+                    </div>
                 </li>
                 <% } %>
             </ul>
     </div>
+    <script src="/javascript/feed.js"></script>
 </body>
 </html>

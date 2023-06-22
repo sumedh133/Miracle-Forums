@@ -24,16 +24,20 @@ const postSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  views: {
+  votes: {
     type: Number,
-    default: 1,
-    min: 1,
+    default: 0,
   },
-  upvotes: {
-    type: [mongoose.Schema.Types.ObjectId],
-    ref: "User",
-    default: [],
-  },
+  upvotes: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    unique: true,
+  }],
+  downvotes: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    unique: true,
+  }],
   time: {
     type: Date,
     default: Date.now,

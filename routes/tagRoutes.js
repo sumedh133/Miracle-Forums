@@ -108,7 +108,19 @@ router.get("/viewTagPosts/:tagId", async (req, res) => {
         const tag= await Tag.findById(tagId);
         const user=await User.findById(req.user._id);
         const check = user.preferredTags.includes(tag._id);
-        return res.render("tagPosts", { posts,tag,check });
+        var checkUp=[];
+        var checkDown=[];
+        posts.forEach(post=>{
+          if(post.upvotes.includes(user._id))
+          checkUp.push(1);
+          else
+          checkUp.push(0);
+          if(post.downvotes.includes(user._id))
+            checkDown.push(1);
+          else
+          checkDown.push(0);
+        });
+        return res.render("tagPosts", { posts,tag,check, checkUp,checkDown });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: "Failed to retrieve tag posts" });

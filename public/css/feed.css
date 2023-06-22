@@ -26,3 +26,9 @@ header{
     top: 50px;
     
 }
+.upvoted{
+    color: red;
+}
+.downvoted{
+    color: blue;
+}

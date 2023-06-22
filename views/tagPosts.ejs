@@ -1,6 +1,11 @@
-<!-- tagPosts.ejs -->
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>Tag Posts</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tag Posts</title>
+    <link rel="stylesheet" href="/css/tagPosts.css">
 </head>
 <body>
     <h1>Posts associated with tag: <%= tag.name %></h1>
@@ -25,10 +30,22 @@
                     <% if (j !== posts[i].tags.length - 1) { %>, <% } %>
                 <% } %>
             </p>
-            <p>Views: <%= posts[i].views %></p>
-            <p>Upvotes: <%= posts[i].upvotes.length %></p>
-        </li>
+            <p>Votes: <span id="voteCount_<%= posts[i]._id %>"><%= posts[i].votes %></span></p>
+                <div>
+                    <% if(checkUp[i]==1) { %>
+                        <button id="upvoteButton_<%= posts[i]._id %>" class="upvoted" onclick="upvote('<%= posts[i]._id %>')">Upvote</button>
+                    <% } else { %>
+                        <button id="upvoteButton_<%= posts[i]._id %>" onclick="upvote('<%= posts[i]._id %>')">Upvote</button>
+                    <% } %>
+                    <% if(checkDown[i]==1) { %>
+                        <button id="downvoteButton_<%= posts[i]._id %>" class="downvoted" onclick="downvote('<%= posts[i]._id %>')">Downvote</button>
+                    <% } else { %>
+                        <button id="downvoteButton_<%= posts[i]._id %>" onclick="downvote('<%= posts[i]._id %>')">Downvote</button>
+                    <% } %>
+                </div>
+            </li>
         <% } %>
     </ul>
+    <script src="/javascript/tagPosts.js"></script>
 </body>
-<script src="/javascript/tagPosts.js"></script>
+</html>
