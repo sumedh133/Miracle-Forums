@@ -6,7 +6,8 @@ const tagSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 1,
-    maxlength: 25
+    maxlength: 25,
+    unique:true
   },
   posts: [{
     type: mongoose.Schema.Types.ObjectId,

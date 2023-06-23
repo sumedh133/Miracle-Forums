@@ -176,6 +176,21 @@ router.get('/suggestedTags', async (req, res) => {
   }
 });
 
+//suggesting tags whicle creating posts
+router.get('/tag/suggestions', async (req, res) => {
+  try {
+    const searchText = req.query.searchText; // Get the entered text from the query parameter
+
+    // Perform a search in the tags collection based on the entered text
+    const matchedTags = await Tag.find({ name: { $regex: searchText, $options: 'i' } });
+
+    res.json(matchedTags); // Return the matched tags as the response
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error retrieving tag suggestions' });
+  }
+});
+
 module.exports = router;
 
   

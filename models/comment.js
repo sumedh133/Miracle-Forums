@@ -6,7 +6,7 @@ const commentSchema = new mongoose.Schema({
     ref: "Post",
     required: true,
   },
-  comment: {
+  content: {
     type: String,
     required: true,
     minlength: 3,
@@ -17,11 +17,20 @@ const commentSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  upvotes: {
-    type: [mongoose.Schema.Types.ObjectId],
-    ref: "User",
-    default: [],
+  votes: {
+    type: Number,
+    default: 0,
   },
+  upvotes: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    default:null
+  }],
+  downvotes: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    default:null
+  }],
   time: {
     type: Date,
     default: Date.now,

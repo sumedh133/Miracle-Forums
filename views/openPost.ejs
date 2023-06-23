@@ -1,0 +1,58 @@
+<!-- open-post.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Post</title>
+    <link rel="stylesheet" href="/css/openPost.css">
+</head>
+<body>
+
+  <!-- Display post content -->
+  <h1><%= post.title %></h1>
+  <p>Description:<%= post.description %></p>
+  <p>Author:<%= post.author.username %></p>
+  <p>Posted on:<%= post.time %></p>
+  <p>Tags:
+    <% for (let j = 0; j < post.tags.length; j++) { %>
+        <a href="/viewTagPosts/<%= post.tags[j]._id %>"><%= post.tags[j].name %></a>
+        <% if (j !== post.tags.length - 1) { %>, <% } %>
+    <% } %>
+    </p>
+    <p>Votes: <span id="voteCount_<%= post._id %>"><%= post.votes %></span></p>
+    <div>
+        <% if(checkUp==1) { %>
+            <button id="upvoteButton_<%= post._id %>" class="upvoted" onclick="upvote('<%= post._id %>')">Upvote</button>
+        <% } else { %>
+            <button id="upvoteButton_<%= post._id %>" onclick="upvote('<%= post._id %>')">Upvote</button>
+        <% } %>
+        <% if(checkDown==1) { %>
+            <button id="downvoteButton_<%= post._id %>" class="downvoted" onclick="downvote('<%= post._id %>')">Downvote</button>
+        <% } else { %>
+            <button id="downvoteButton_<%= post._id %>" onclick="downvote('<%= post._id %>')">Downvote</button>
+        <% } %>
+    </div>
+
+  <!-- Comment section -->
+  <div id="comment-section">
+    <h3>Comments</h3>
+
+    <!-- Display comments and replies using indentation -->
+    <ul id="comments-list"></ul>
+
+    <!-- Comment form -->
+    <h4>Add a Comment</h4>
+    <form id="comment-form">
+      <div class="form-group">
+        <textarea class="form-control" id="comment-content" rows="3" placeholder="Write your comment"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit Comment</button>
+    </form>
+  </div>
+
+  <script src="/javascript/openPost.js"></script>
+</body>
+</html>

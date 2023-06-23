@@ -31,12 +31,19 @@ const postSchema = new mongoose.Schema({
   upvotes: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    unique: true,
+    default:null,
+    unique:false
   }],
   downvotes: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    unique: true,
+    default:null,
+    unique:false
+  }],
+  comments: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Comment',
+    default:null
   }],
   time: {
     type: Date,
@@ -46,15 +53,5 @@ const postSchema = new mongoose.Schema({
 
 const Post = mongoose.model("Post", postSchema);
 
-function validatePost(post) {
-  const schema = Joi.object({
-    title: Joi.string().required().min(10).max(80),
-    description: Joi.string().required().min(3).max(1024),
-    tags: Joi.array(),
-  });
-  return schema.validate(post);
-}
-
 exports.postSchema = postSchema;
 exports.Post = Post;
-exports.validatePost = validatePost;

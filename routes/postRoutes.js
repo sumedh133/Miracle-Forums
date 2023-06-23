@@ -41,12 +41,10 @@ router.get("/create", function (req, res) {
 
 router.post("/create", async (req, res) => {
   const tagsText = req.body.tags;
-  const tagsName = tagsText.split(',');
   const tagsArray = tagsText.split(',').map(tag => ({ name: tag.trim() }));
   const post = new Post({
     title: req.body.title,
     description: req.body.description,
-    tags_name:tagsName,
     author: req.user._id,
     views: 1,
   });
@@ -65,7 +63,6 @@ router.post("/create", async (req, res) => {
     const user = await User.findById(req.user._id);
     user.posts.push(post._id);
     await user.save();
-
     res.send("Post successfully created.");
   } catch (err) {
     console.log("Error creating post:", err);
@@ -73,25 +70,26 @@ router.post("/create", async (req, res) => {
   }
 });
 
-router.get('/tag/suggestions', async (req, res) => {
-  try {
-    const searchText = req.query.searchText; // Get the entered text from the query parameter
-
-    // Perform a search in the tags collection based on the entered text
-    const matchedTags = await Tag.find({ name: { $regex: searchText, $options: 'i' } });
-
-    res.json(matchedTags); // Return the matched tags as the response
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Error retrieving tag suggestions' });
-  }
-});
 
 router.get("/viewPost/:postId", async function (req, res) {
   try {
+    const user= await User.findById(req.user._id);
     const postId = req.params.postId;
-    const post = await Post.findById(postId);
-    return res.render("viewPost", { post });
+    const post = await Post.findById(postId)
+    .populate("author")
+    .populate("tags")
+    .populate("comments");
+    var checkUp,checkDown;
+    if(post.upvotes.includes(user._id))
+      checkUp=1;
+    else
+      checkUp=0;
+    if(post.downvotes.includes(user._id))
+      checkDown=1;
+    else
+      checkDown=0;
+
+    return res.render("openPost", { post,user,checkDown,checkUp });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Error" });
@@ -162,7 +160,6 @@ router.post('/posts/:postId/downvote', async (req, res) => {
     return res.status(500).json({ message: 'Failed to update post vote' });
   }
 });
-
 
 module.exports = router;
 
