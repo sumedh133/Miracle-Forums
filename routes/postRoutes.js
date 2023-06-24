@@ -78,7 +78,13 @@ router.get("/viewPost/:postId", async function (req, res) {
     const post = await Post.findById(postId)
     .populate("author")
     .populate("tags")
-    .populate("comments");
+    .populate({
+      path: "comments",
+      populate: {
+        path: "author",
+        model: "User"
+      }
+    });
     var checkUp,checkDown;
     if(post.upvotes.includes(user._id))
       checkUp=1;
