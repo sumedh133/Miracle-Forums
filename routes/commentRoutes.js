@@ -1,9 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const { Post } = require("../models/post");
-const { Comment } = require("../models/comment");
+const { Comment} = require("../models/comment");
 const { User } = require("../models/user");
-const { Tag } = require("../models/tag");
 
 router.post("/submitComment/:postId", async function (req, res) {
     try {
@@ -98,6 +97,29 @@ router.post('/comments/:commentId/upvote', async (req, res) => {
       return res.status(500).json({ message: 'Failed to update comment vote' });
     }
   });
+
+  router.post("/comments/:commentId/reply", async function (req, res) {
+    try {
+      const commentId = req.params.commentId;
+      const comment = await Comment.findById(commentId);
+      const user = await User.findById(req.user._id);
+  
+      const reply = {
+        author: user._id,
+        content: req.body.replyContent,
+        time: Date.now(),
+      };
+  
+      comment.replies.push(reply);
+      await comment.save();
+  
+      res.redirect(`/viewPost/${comment.post}`);
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Error" });
+    }
+  });
+  
   
   module.exports = router;
   

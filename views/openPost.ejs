@@ -36,10 +36,9 @@
     <% } %>
   </div>
 
-  <!-- Comment section -->
   <div id="comment-section">
     <h3>Comments</h3>
-
+  
     <!-- Display comments -->
     <ul id="comments-list">
       <% post.comments.forEach(function(comment) { %>
@@ -60,15 +59,32 @@
               <button id="downvoteButton_<%= comment._id %>" onclick="downvoteComment('<%= comment._id %>')">Downvote</button>
             <% } %>
           </div>
+          <button class="viewRepliesButton" onclick="toggleReplies('<%= comment._id %>')">View Replies</button>
+          <div id="replies_<%= comment._id %>" class="replies" style="display: none;">
+            <% if (comment.replies && comment.replies.length > 0) { %>
+              <% comment.replies.forEach(reply => { %>
+                <div class="reply" data-reply-id="<%= reply._id %>">
+                  <p><%= reply.author.username %>:<%= reply.content %></p>
+                </div>
+              <% }) %>
+            <% } %>
+            <div class="replyFormContainer" style="display: none;">
+              <form class="replyForm" action="/comments/<%= comment._id %>/reply" method="POST">
+                <input type="hidden" name="parentCommentId" value="<%= comment._id %>">
+                <textarea required name="replyContent"></textarea>
+                <button type="submit">Submit Reply</button>
+              </form>
+            </div>
+          </div>
         </li>
       <% }) %>
     </ul>
-
+  
     <!-- Comment form -->
     <h4>Add a Comment</h4>
     <form id="comment-form" method="POST" action="/submitComment/<%= post._id %>">
       <div class="form-group">
-        <textarea class="form-control" name="commentContent" id="comment-content" rows="3" placeholder="Write your comment"></textarea>
+        <textarea required class="form-control" name="commentContent" id="comment-content" rows="3" placeholder="Write your comment"></textarea>
       </div>
       <button type="submit" class="btn btn-primary">Submit Comment</button>
     </form>

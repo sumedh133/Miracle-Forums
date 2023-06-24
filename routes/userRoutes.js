@@ -85,7 +85,9 @@ router.post("/login", function(req, res, next) {
 router.get("/profile", async function (req, res) {
   try {
     const userId = req.user._id;
-    const posts = await Post.find({ author: userId });
+    const posts = await Post.find({ author: userId })
+    .populate("author")
+    .populate("tags");
     return res.render('userProfile', { user:req.user, posts});
   } catch (err) {
     console.log('Error retrieving user profile:', err);

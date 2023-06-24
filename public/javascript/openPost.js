@@ -152,5 +152,17 @@ function sendVoteRequest(url) {
         // Handle error case if necessary
     });
 }
-  
+
+function toggleReplies(commentId) {
+  const repliesContainer = document.getElementById(`replies_${commentId}`);
+  const replyFormContainer = repliesContainer.querySelector('.replyFormContainer');
+
+  if (repliesContainer.style.display === 'none') {
+    repliesContainer.style.display = 'block';
+    replyFormContainer.style.display = 'block';
+  } else {
+    repliesContainer.style.display = 'none';
+    replyFormContainer.style.display = 'none';
+  }
+}
   
