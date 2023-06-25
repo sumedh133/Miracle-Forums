@@ -29,7 +29,7 @@
     <ul>
         <% for (let i = 0; i < posts.length; i++) { %>
         <li>
-            <h3><%= posts[i].title %></h3>
+            <h3><a href="/viewPost/<%= posts[i]._id %>"><%= posts[i].title %></a></h3>
             <p><%= posts[i].description %></p>
             <p>Author: <%= posts[i].author.username %></p>
             <p>Posted on: <%= posts[i].time %></p>

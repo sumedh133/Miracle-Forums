@@ -13,15 +13,18 @@ body{
     background-size: cover;
     background-position: center;
 }
-header{
+header {
     position: fixed;
-    top:0;
+    top: 0;
     width: 100%;
     padding: 20px 100px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
+    background-color: transparent; /* Set a transparent background */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a box shadow for visual separation */
+    z-index: 100; /* Ensure the navigation bar is positioned above the feed */
+  }
 .logo{
     user-select: none;
     font-size: 2em;
@@ -46,7 +49,7 @@ header{
     transform: scaleX(0);
     transition: transform .5s;
 }
-.navigation a:hover::after{
+.navigation a:hover::after {
     transform: scaleX(1);
 }
 .navigation .btn-LoginPopup{
