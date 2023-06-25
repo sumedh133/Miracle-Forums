@@ -98,3 +98,8 @@ function sendVoteRequest(url) {
         // Handle error case if necessary
     });
 }
+function sortPosts(sortBy) {
+    const url = new URL(window.location.href);
+    url.searchParams.set('sortBy', sortBy);
+    window.location.href = url.href;
+}

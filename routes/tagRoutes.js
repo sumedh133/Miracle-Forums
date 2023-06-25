@@ -104,23 +104,33 @@ router.post("/removeTags", async (req,res)=>{
 router.get("/viewTagPosts/:tagId", async (req, res) => {
     try {
         const tagId = req.params.tagId;
-        const posts = await Post.find({ tags: tagId }).populate("tags");
         const tag= await Tag.findById(tagId);
+
+        // Retrieve the sorting option from the query parameters
+        const sortBy = req.query.sortBy || "recent"; // Default to sorting by most recent
+
+        // Define the sort criteria
+        let sortCriteria = {};
+        if (sortBy === "upvotes") {
+          sortCriteria = { votes: -1 }; // Sort by votes, descending order
+        } else if (sortBy === "comments") {
+          sortCriteria = { comments_size: -1 }; // Sort by comment count, descending order
+        } else {
+          sortCriteria = { time: -1 }; // Sort by date, descending order (most recent)
+        }
+
+        const posts = await Post.aggregate([
+          { $match: { tags: { $in: [tag._id] } } },
+          { $lookup: { from: "comments", localField: "comments", foreignField: "_id", as: "comments" } },
+          { $addFields: { comments_size: { $size: "$comments" } } },
+          { $sort: sortCriteria },
+          { $lookup: { from: "tags", localField: "tags", foreignField: "_id", as: "tags" } },
+          { $lookup: { from: "users", localField: "author", foreignField: "_id", as: "author" } },
+          { $unwind: "$author" }
+        ]);
+
         const user=await User.findById(req.user._id);
-        const check = user.preferredTags.includes(tag._id);
-        var checkUp=[];
-        var checkDown=[];
-        posts.forEach(post=>{
-          if(post.upvotes.includes(user._id))
-          checkUp.push(1);
-          else
-          checkUp.push(0);
-          if(post.downvotes.includes(user._id))
-            checkDown.push(1);
-          else
-          checkDown.push(0);
-        });
-        return res.render("tagPosts", { posts,tag,check, checkUp,checkDown });
+        return res.render("tagPosts", { posts,tag,sortBy,user});
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: "Failed to retrieve tag posts" });
