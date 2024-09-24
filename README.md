@@ -1,3 +1,5 @@
 ﻿# Miracle Forums
 
-A complete full stack text based forum platform implemented using token based authentication system, MongoDB and Javascript.
+A full stack web dav project.
+Text based forum made using MongoDB, Express and Node.
+Includes custom token based authentication and responsive design.
