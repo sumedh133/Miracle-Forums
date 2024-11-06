@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tag Posts</title>
+    <link rel="stylesheet" href="/css/tagPosts.css">
+</head>
+<body>
+    <h1>Posts associated with tag: <%= tag.name %></h1>
+    <% if (user.preferredTags.includes(tag._id)) { %>
+    <form class="tagForm" id="removeButtonForm" action="/removeTag/<%= tag._id %>" method="POST">
+        <button type="submit">Remove tag</button>
+    </form>
+    <% } else { %>   
+    <form class="tagForm" id="saveButtonForm" action="/saveTag/<%= tag._id %>" method="POST">
+        <button type="submit">Save tag</button>
+    </form>
+    <% } %>
+    <div class="sort-options">
+        <label for="sortSelect">Sort By:</label>
+        <select id="sortSelect" onchange="sortPosts(this.value)">
+            <option value="recent" <%= (sortBy === "recent") ? "selected" : "" %>>Most Recent</option>
+            <option value="upvotes" <%= (sortBy === "upvotes") ? "selected" : "" %>>Most Upvotes</option>
+            <option value="comments" <%= (sortBy === "comments") ? "selected" : "" %>>Most Comments</option>
+        </select>
+    </div>
+    <ul>
+        <% for (let i = 0; i < posts.length; i++) { %>
+        <li>
+            <h3><a href="/viewPost/<%= posts[i]._id %>"><%= posts[i].title %></a></h3>
+            <p><%= posts[i].description %></p>
+            <p>Author: <%= posts[i].author.username %></p>
+            <p>Posted on: <%= posts[i].time %></p>
+            <p>Tags: 
+                <% for (let j = 0; j < posts[i].tags.length; j++) { %>
+                    <a href="/viewTagPosts/<%= posts[i].tags[j]._id %>"><%= posts[i].tags[j].name %></a>
+                    <% if (j !== posts[i].tags.length - 1) { %>, <% } %>
+                <% } %>
+            </p>
+            <p>Comments: <%= posts[i].comments.length %></p>
+            <p>Votes: <span id="voteCount_<%= posts[i]._id %>"><%= posts[i].votes %></span></p>
+                <div>
+                    <% const userUpvoted = posts[i].upvotes.some((upvote) => upvote._id.equals(user._id)); %>
+                    <% const userDownvoted = posts[i].downvotes.some((downvote) => downvote._id.equals(user._id)); %>
+                    <% if(userUpvoted) { %>
+                        <button id="upvoteButton_<%= posts[i]._id %>" class="upvoted" onclick="upvote('<%= posts[i]._id %>')">Upvote</button>
+                    <% } else { %>
+                        <button id="upvoteButton_<%= posts[i]._id %>" onclick="upvote('<%= posts[i]._id %>')">Upvote</button>
+                    <% } %>
+                    <% if(userDownvoted) { %>
+                        <button id="downvoteButton_<%= posts[i]._id %>" class="downvoted" onclick="downvote('<%= posts[i]._id %>')">Downvote</button>
+                    <% } else { %>
+                        <button id="downvoteButton_<%= posts[i]._id %>" onclick="downvote('<%= posts[i]._id %>')">Downvote</button>
+                    <% } %>
+                </div>
+            </li>
+        <% } %>
+    </ul>
+    <script src="/javascript/tagPosts.js"></script>
+</body>
+</html>

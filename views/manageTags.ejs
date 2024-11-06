@@ -1,0 +1,50 @@
+<div>
+  <label>Search Tags:</label>
+  <input type="text" id="tagInput" onkeyup="handleTagSuggestion(event)">
+  <ul id="suggestedTags"></ul>
+</div>
+<br><hr><br>
+<h1>Tags which you haven't saved:</h1>
+<div>
+  <label>Sort by:</label>
+  <select id="unsavedSortOption" onchange="handleUnsavedSortChange()">
+    <option value="recentUnsaved" <% if (unsavedSortOption === 'recentUnsaved') { %>selected<% } %>>Most Recent</option>
+    <option value="posts" <% if (unsavedSortOption === 'posts') { %>selected<% } %>>Number of Posts</option>
+    <option value="users" <% if (unsavedSortOption === 'users') { %>selected<% } %>>Number of Users</option>
+  </select>
+</div>
+
+<form action="/saveTags" method="POST" id="saveButton" onsubmit="return validateSaveTags()">
+  <% tags.forEach(tag => { %>
+    <div>
+      <input type="checkbox" name="tags" value="<%= tag._id %>">
+      <label><a href="/viewTagPosts/<%= tag._id %>"><%= tag.name %></a> Posts: <%= tag.postCount %>, Users: <%= tag.userCount %></label>
+    </div>
+  <% }); %>
+  <button type="submit">Save preferred tags</button>
+</form>
+<br><br>
+
+<h1>Saved Tags</h1>
+
+<!-- Sort options for saved tags -->
+<div>
+  <label>Sort by:</label>
+  <select id="savedSortOption" onchange="handleSavedSortChange()">
+    <option value="recentSaved" <% if (savedSortOption === 'recentSaved') { %>selected<% } %>>Most Recent</option>
+    <option value="posts" <% if (savedSortOption === 'posts') { %>selected<% } %>>Number of Posts</option>
+    <option value="users" <% if (savedSortOption === 'users') { %>selected<% } %>>Number of Users</option>
+  </select>
+</div>
+
+<form action="/removeTags" id="removeButton" method="POST" onsubmit="return validateRemoveTags()">
+  <% sTags.forEach(sTag => { %>
+    <div>
+      <input type="checkbox" name="stags" value="<%= sTag._id %>">
+      <label><a href="/viewTagPosts/<%= sTag._id %>"><%= sTag.name %></a>Posts: <%= sTag.postCount %>, Users: <%= sTag.userCount %></label>
+    </div>
+  <% }); %>
+  <button  type="submit">Remove checked tags</button>
+</form>
+
+<script src="/javascript/manageTags.js"></script>

@@ -1,0 +1,95 @@
+<!-- open-post.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Post</title>
+    <link rel="stylesheet" href="/css/openPost.css">
+</head>
+<body>
+
+  <!-- Display post content -->
+  <h1><%= post.title %></h1>
+  <p>Description: <%= post.description %></p>
+  <p>Author: <%= post.author.username %></p>
+  <p>Posted on: <%= post.time %></p>
+  <p>Tags:
+    <% for (let j = 0; j < post.tags.length; j++) { %>
+        <a href="/viewTagPosts/<%= post.tags[j]._id %>"><%= post.tags[j].name %></a>
+        <% if (j !== post.tags.length - 1) { %>, <% } %>
+    <% } %>
+  </p>
+  <p>Votes: <span id="voteCount_<%= post._id %>"><%= post.votes %></span></p>
+  <div>
+    <% if (checkUp == 1) { %>
+      <button id="upvoteButton_<%= post._id %>" class="upvoted" onclick="upvotePost('<%= post._id %>')">Upvote</button>
+    <% } else { %>
+      <button id="upvoteButton_<%= post._id %>" onclick="upvotePost('<%= post._id %>')">Upvote</button>
+    <% } %>
+    <% if (checkDown == 1) { %>
+      <button id="downvoteButton_<%= post._id %>" class="downvoted" onclick="downvotePost('<%= post._id %>')">Downvote</button>
+    <% } else { %>
+      <button id="downvoteButton_<%= post._id %>" onclick="downvotePost('<%= post._id %>')">Downvote</button>
+    <% } %>
+  </div>
+
+  <div id="comment-section">
+    <h3>Comments</h3>
+  
+    <!-- Display comments -->
+    <ul id="comments-list">
+      <% post.comments.forEach(function(comment) { %>
+        <li>
+          <p><%= comment.content %></p>
+          <p>Author: <%= comment.author.username %></p>
+          <p>Posted on: <%= comment.time %></p>
+          <p>Votes: <span id="voteCount_<%= comment._id %>"><%= comment.votes %></span></p>
+          <div>
+            <% if (comment.upvotes.includes(user._id)) { %>
+              <button id="upvoteButton_<%= comment._id %>" class="upvoted" onclick="upvoteComment('<%= comment._id %>')">Upvote</button>
+            <% } else { %>
+              <button id="upvoteButton_<%= comment._id %>" onclick="upvoteComment('<%= comment._id %>')">Upvote</button>
+            <% } %>
+            <% if (comment.downvotes.includes(user._id)) { %>
+              <button id="downvoteButton_<%= comment._id %>" class="downvoted" onclick="downvoteComment('<%= comment._id %>')">Downvote</button>
+            <% } else { %>
+              <button id="downvoteButton_<%= comment._id %>" onclick="downvoteComment('<%= comment._id %>')">Downvote</button>
+            <% } %>
+          </div>
+          <button class="viewRepliesButton" onclick="toggleReplies('<%= comment._id %>')">View Replies</button>
+          <div id="replies_<%= comment._id %>" class="replies" style="display: none;">
+            <% if (comment.replies && comment.replies.length > 0) { %>
+              <% comment.replies.forEach(reply => { %>
+                <div class="reply" data-reply-id="<%= reply._id %>">
+                  <p><%= reply.author.username %>:<%= reply.content %></p>
+                </div>
+              <% }) %>
+            <% } %>
+            <div class="replyFormContainer" style="display: none;">
+              <form class="replyForm" action="/comments/<%= comment._id %>/reply" method="POST">
+                <input type="hidden" name="parentCommentId" value="<%= comment._id %>">
+                <textarea required name="replyContent"></textarea>
+                <button type="submit">Submit Reply</button>
+              </form>
+            </div>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  
+    <!-- Comment form -->
+    <h4>Add a Comment</h4>
+    <form id="comment-form" method="POST" action="/submitComment/<%= post._id %>">
+      <div class="form-group">
+        <textarea required class="form-control" name="commentContent" id="comment-content" rows="3" placeholder="Write your comment"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit Comment</button>
+    </form>
+  </div>
+
+  <script src="/javascript/openPost.js"></script>
+</body>
+</html>
