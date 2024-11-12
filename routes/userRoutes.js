@@ -20,11 +20,21 @@ router.get("/loginRegistration", function(req, res) {
   return res.render("loginRegistration");
 });
 
+
+
 router.get('/logout', function(req, res, next) {
-  //clicking on logout button will no longer accept the cookie as valid
   req.logout(function(err) {
-    if (err) { return next(err); }
-    return res.redirect('/loginRegistration');
+    if (err) { 
+      console.error('Error during logout:', err);
+      return next(err); 
+    }
+    req.session.destroy((err) => {
+      if (err) {
+        console.error('Error destroying session during logout:', err);
+        return res.redirect('/'); 
+      }
+      return res.redirect('/loginRegistration'); 
+    });
   });
 });
 
