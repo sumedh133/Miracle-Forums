@@ -5,7 +5,7 @@ const postSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
-    minlength: 5,
+    minlength: 1,
     maxlength: 80,
   },
   tags: [{
@@ -16,7 +16,7 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 5,
-    maxlength: 1024,
+    maxlength: 10240,
     required: true,
   },
   author: {

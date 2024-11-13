@@ -11,7 +11,9 @@
 
 <body>
   <header>
-    <h2 class="logo">LOGO</h2>
+    <a href="/feed" style="text-decoration: none;">
+      <h2 class="logo" style="color: white; margin: 0;">TextNest</h2>
+    </a>
     <nav class="navigation">
       <a href="/create" role="button">Create Post</a>
       <a href="/manageTags" role="button">Manage Tags</a>
@@ -45,6 +47,19 @@
   </div>
 
   <script src="/javascript/createPost.js"></script>
+  <script>
+    // Assuming the form is successfully submitted and a post is created
+    document.getElementById("createPostForm").addEventListener("submit", function(event) {
+      event.preventDefault();  // Prevent form submission for demonstration
+
+      // Simulate a successful post creation
+      setTimeout(function() {
+        alert("Post successfully created!");
+        // After the alert, you can redirect or do other actions
+        window.location.href = "/feed"; // Optional: redirect to feed page after post
+      }, 500);
+    });
+  </script>
 </body>
 
 </html>
