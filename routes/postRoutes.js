@@ -6,24 +6,24 @@ const { Tag } = require("../models/tag");
 
 router.get('/feed', async function(req, res) {
   try {
-    // Retrieve the user's preferred tags
+    
     const user = await User.findById(req.user._id).populate("preferredTags");
     const preferredTags = user.preferredTags.map((tag) => tag._id);
 
-    // Retrieve the sorting option from the query parameters
-    const sortBy = req.query.sortBy || "recent"; // Default to sorting by most recent
+    
+    const sortBy = req.query.sortBy || "recent"; 
 
-    // Define the sort criteria
+    
     let sortCriteria = {};
     if (sortBy === "upvotes") {
-      sortCriteria = { votes: -1 }; // Sort by votes, descending order
+      sortCriteria = { votes: -1 }; 
     } else if (sortBy === "comments") {
-      sortCriteria = { comments_size: -1 }; // Sort by comment count, descending order
+      sortCriteria = { comments_size: -1 }; 
     } else {
-      sortCriteria = { time: -1 }; // Sort by date, descending order (most recent)
+      sortCriteria = { time: -1 }; 
     }
 
-    // Find posts with at least one of the preferred tags and calculate the comments_size
+    
     const posts = await Post.aggregate([
       { $match: { tags: { $in: preferredTags } } },
       { $lookup: { from: "comments", localField: "comments", foreignField: "_id", as: "comments" } },
@@ -72,12 +72,13 @@ router.post("/create", async (req, res) => {
     const user = await User.findById(req.user._id);
     user.posts.push(post._id);
     await user.save();
-    res.send("Post successfully created.");
+    res.json({ success: true, message: "Post successfully created." });
   } catch (err) {
     console.log("Error creating post:", err);
-    res.status(500).send("An error occurred while creating the post.");
+    res.status(500).json({ success: false, message: "An error occurred while creating the post." });
   }
 });
+
 
 
 router.get("/viewPost/:postId", async function (req, res) {
@@ -112,7 +113,7 @@ router.get("/viewPost/:postId", async function (req, res) {
 }
 });
 
-// Upvote a post
+
 router.post('/posts/:postId/upvote', async (req, res) => {
   try {
     const postId = req.params.postId;
@@ -144,7 +145,7 @@ router.post('/posts/:postId/upvote', async (req, res) => {
   }
 });
 
-// Downvote a post
+
 router.post('/posts/:postId/downvote', async (req, res) => {
   try {
     const postId = req.params.postId;

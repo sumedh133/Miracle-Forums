@@ -1,50 +1,115 @@
-<div>
-  <label>Search Tags:</label>
-  <input type="text" id="tagInput" onkeyup="handleTagSuggestion(event)">
-  <ul id="suggestedTags"></ul>
-</div>
-<br><hr><br>
-<h1>Tags which you haven't saved:</h1>
-<div>
-  <label>Sort by:</label>
-  <select id="unsavedSortOption" onchange="handleUnsavedSortChange()">
-    <option value="recentUnsaved" <% if (unsavedSortOption === 'recentUnsaved') { %>selected<% } %>>Most Recent</option>
-    <option value="posts" <% if (unsavedSortOption === 'posts') { %>selected<% } %>>Number of Posts</option>
-    <option value="users" <% if (unsavedSortOption === 'users') { %>selected<% } %>>Number of Users</option>
-  </select>
-</div>
+<!DOCTYPE html>
+<html lang="en">
 
-<form action="/saveTags" method="POST" id="saveButton" onsubmit="return validateSaveTags()">
-  <% tags.forEach(tag => { %>
-    <div>
-      <input type="checkbox" name="tags" value="<%= tag._id %>">
-      <label><a href="/viewTagPosts/<%= tag._id %>"><%= tag.name %></a> Posts: <%= tag.postCount %>, Users: <%= tag.userCount %></label>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Tags</title>
+  <link rel="stylesheet" href="/css/manageTags.css">
+</head>
+
+<body>
+  <header>
+    <h2 class="logo">LOGO</h2>
+    <nav class="navigation">
+      <a href="/create" role="button">Create Post</a>
+      <a href="/manageTags" role="button">Manage Tags</a>
+      <a href="/profile" role="button">User Profile</a>
+      <button onclick="window.location.href='/logout'" class="btn-LoginPopup">Logout</button>
+    </nav>
+  </header>
+
+  <div class="manageTagsContainer">
+    <!-- First Flexbox: Unsaved Tags -->
+    <div class="search">
+        <label>Search Tags:</label>
+        <input type="text" id="tagInput" onkeyup="handleTagSuggestion(event)">
+        <ul id="suggestedTags"></ul>
     </div>
-  <% }); %>
-  <button type="submit">Save preferred tags</button>
-</form>
-<br><br>
+    <div class="flex-container">
+        <div class="flex-box">
+            <h2>Unsaved Tags</h2>
 
-<h1>Saved Tags</h1>
+            <label>Sort by:</label>
+            <select id="unsavedSortOption" onchange="handleUnsavedSortChange()">
+                <option value="recentUnsaved" <% if (unsavedSortOption === 'recentUnsaved') { %> selected <% } %>>Most Recent</option>
+                <option value="posts" <% if (unsavedSortOption === 'posts') { %> selected <% } %>>Number of Posts</option>
+                <option value="users" <% if (unsavedSortOption === 'users') { %> selected <% } %>>Number of Users</option>
+            </select>
 
-<!-- Sort options for saved tags -->
-<div>
-  <label>Sort by:</label>
-  <select id="savedSortOption" onchange="handleSavedSortChange()">
-    <option value="recentSaved" <% if (savedSortOption === 'recentSaved') { %>selected<% } %>>Most Recent</option>
-    <option value="posts" <% if (savedSortOption === 'posts') { %>selected<% } %>>Number of Posts</option>
-    <option value="users" <% if (savedSortOption === 'users') { %>selected<% } %>>Number of Users</option>
-  </select>
+            <form action="/saveTags" method="POST" id="saveButton" onsubmit="return validateSaveTags()">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Select</th>
+                            <th>Tag Name</th>
+                            <th>Posts</th>
+                            <th>Users</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% tags.forEach(tag => { %>
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="tags" value="<%= tag._id %>">
+                            </td>
+                            <td>
+                                <a href="/viewTagPosts/<%= tag._id %>"><%= tag.name %></a>
+                            </td>
+                            <td><%= tag.postCount %></td>
+                            <td><%= tag.userCount %></td>
+                        </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+                <button type="submit">Save preferred tags</button>
+            </form>
+        </div>
+
+        <!-- Second Flexbox: Saved Tags -->
+        <div class="flex-box">
+            <h2>Saved Tags</h2>
+
+            <label>Sort by:</label>
+            <select id="savedSortOption" onchange="handleSavedSortChange()">
+                <option value="recentSaved" <% if (savedSortOption === 'recentSaved') { %> selected <% } %>>Most Recent</option>
+                <option value="posts" <% if (savedSortOption === 'posts') { %> selected <% } %>>Number of Posts</option>
+                <option value="users" <% if (savedSortOption === 'users') { %> selected <% } %>>Number of Users</option>
+            </select>
+
+            <form action="/removeTags" method="POST" id="removeButton" onsubmit="return validateRemoveTags()">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Select</th>
+                            <th>Tag Name</th>
+                            <th>Posts</th>
+                            <th>Users</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% sTags.forEach(sTag => { %>
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="stags" value="<%= sTag._id %>">
+                            </td>
+                            <td>
+                                <a href="/viewTagPosts/<%= sTag._id %>"><%= sTag.name %></a>
+                            </td>
+                            <td><%= sTag.postCount %></td>
+                            <td><%= sTag.userCount %></td>
+                        </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+                <button type="submit">Remove checked tags</button>
+            </form>
+        </div>
+    </div>
 </div>
 
-<form action="/removeTags" id="removeButton" method="POST" onsubmit="return validateRemoveTags()">
-  <% sTags.forEach(sTag => { %>
-    <div>
-      <input type="checkbox" name="stags" value="<%= sTag._id %>">
-      <label><a href="/viewTagPosts/<%= sTag._id %>"><%= sTag.name %></a>Posts: <%= sTag.postCount %>, Users: <%= sTag.userCount %></label>
-    </div>
-  <% }); %>
-  <button  type="submit">Remove checked tags</button>
-</form>
 
-<script src="/javascript/manageTags.js"></script>
+  <script src="/javascript/manageTags.js"></script>
+</body>
+
+</html>

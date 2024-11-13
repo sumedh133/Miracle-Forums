@@ -1,177 +1,188 @@
-/* Reset default margin and padding */
+/* Updated */
+
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  /* Body styles */
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f7f7f7;
-  }
-  
-  /* Header styles */
-  header {
-    background-color: #333;
-    padding: 10px;
-    color: #fff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  header a {
-    color: #fff;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: verdana, arial, helvetica, sans-serif;
+}
+
+.navigation a,
+  .navigation button {
+    color: white;
     text-decoration: none;
-    margin-right: 10px;
-    padding: 5px;
+    margin-left: 20px;
+    font-size: 1.1em;
   }
   
-  header a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-  
-  header p {
-    margin: 0;
-  }
-  
-  /* Feed styles */
-  .feed {
-    max-width: 800px;
-    margin: 20px auto;
-    background-color: #fff;
-    padding: 20px;
+  /* Logout Button */
+  .logout-btn {
+    background-color: #182c3c;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
     border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
-  .feed h1 {
-    font-size: 24px;
-    margin-bottom: 10px;
+  .logout-btn:hover {
+    background-color: #3c5066;
   }
-  
-  .sort-options {
-    margin-bottom: 20px;
-  }
-  
-  .sort-options label {
-    font-weight: bold;
-    margin-right: 10px;
-  }
-  
-  .sort-options select {
-    padding: 5px;
-    border-radius: 3px;
-    border: 1px solid #ccc;
-  }
-  
-  ul {
-    list-style: none;
-  }
-  
-  li {
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-  }
-  
-  li:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-  }
-  
-  li h3 {
-    font-size: 20px;
-    margin-bottom: 5px;
-    color: #333; /* Set the color of the post title */
-  }
-  
-  li p {
-    margin-bottom: 5px;
-    color: #555; /* Set the color of the post content */
-  }
-  
-  li p:last-child {
-    margin-bottom: 10px;
-  }
-  
-  li a {
-    color: #333;
-    text-decoration: none;
-  }
-  
-  li a:hover {
-    text-decoration: underline;
-  }
-  
-  li p.tags a {
-    color: #555;
-    text-decoration: none;
-  }
-  
-  li p.tags a:hover {
-    text-decoration: underline;
-  }
-  
-  .comment-count {
-    color: #888;
-  }
-  
-  .vote-count {
-    color: #888;
-    font-weight: bold;
-  }
-  
-  button {
-    padding: 5px 10px;
-    border: none;
-    border-radius: 3px;
-    color: #fff;
-    cursor: pointer;
-    font-size: 14px;
-    background-color: #555; /* Darker background color */
-    transition: transform 0.2s ease-in-out; /* Add transition for pop-up effect */
-  }
-  
-  button.upvoted {
-    background-color: #3d9e59; /* Darker background color for upvoted button */
-    margin-right: 5px;
-    border: none;
-    cursor: pointer;
-    outline: none;
-  }
-  
-  button.downvoted {
-    background-color: #a84b41; /* Darker background color for downvoted button */
-    margin-right: 5px;
-    border: none;
-    cursor: pointer;
-    outline: none;
-  }
-  
-  button i {
-    color: #fff;
-  }
-  
-  button:hover {
-    opacity: 0.8;
-    transform: scale(1.1); /* Add pop-up effect on hover */
-  }
-  
-  /* Responsive styles */
-  @media screen and (max-width: 600px) {
-    .feed {
-      padding: 10px;
-    }
-  
-    li {
-      padding-bottom: 5px;
-      margin-bottom: 10px;
-    }
-  
-    li h3 {
-      font-size: 18px;
-    }
-  }
-  
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-image: url('background.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  overflow-y: hidden;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 20px 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+  z-index: 100;
+}
+
+.logo {
+  user-select: none;
+  font-size: 2em;
+}
+
+.navigation a {
+  position: relative;
+  font-size: 1.1em;
+  color: white;
+  font-weight: 500;
+  margin-left: 50px;
+  text-decoration: none;
+}
+
+.navigation a::after {
+  content: '';
+  position: absolute;
+  left: 0px;
+  bottom: -4px;
+  width: 100%;
+  height: 3px;
+  background: white;
+  border-radius: 5px;
+  transform: scaleX(0);
+  transition: transform 0.5s;
+}
+
+.navigation a:hover::after {
+  transform: scaleX(1);
+}
+
+.navigation .btn-LoginPopup {
+  width: 150px;
+  height: 50px;
+  background: transparent;
+  border: 2px solid white;
+  margin-left: 50px;
+  border-radius: 5px;
+  font-size: 1.1em;
+  color: white;
+  font-weight: 500;
+  transition: 0.5s;
+}
+
+.navigation .btn-LoginPopup:hover {
+  background-color: aliceblue;
+  color: #162938;
+  border: 2px solid #162938;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.post {
+  max-width: 800px; /* Wider maximum width */
+  width: 90%; /* Occupy 90% of the viewport width */
+  margin: 140px auto 20px; /* Adjusted top margin for space below header */
+  background-color: rgba(255, 255, 255, 0.95); /* Slightly opaque white background */
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  max-height: calc(100vh - 160px); /* Ensure space below header */
+  text-align: left; /* Align content to the left */
+}
+
+.post h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #444;
+}
+
+/* Form styling */
+form div {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+label {
+  font-size: 14px;
+  color: #666;
+  display: block;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+#tagSuggestions {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #888;
+}
+
+p {
+  font-size: 12px;
+  color: #666;
+  margin-top: 5px;
+}
+
+/* Submit button */
+button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #3b82f6;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #2563eb;
+}

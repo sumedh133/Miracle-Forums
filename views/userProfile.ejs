@@ -1,45 +1,59 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Profile</title>
   <link rel="stylesheet" href="/css/userProfile.css">
 </head>
 <body>
-  <h1>Welcome to Your Profile</h1>
-  <h2>Username: <%= user.username %></h2>
-  
-  <h3>Your Posts:</h3>
-  <ul>
-    <% for (let i = 0; i < posts.length; i++) { %>
-    <li>
-        <h3><a href="/viewPost/<%= posts[i]._id %>"><%= posts[i].title %></a></h3>
-        <p><%= posts[i].description %></p>
-        <p>Author: <%= posts[i].author.username %></p>
-        <p>Posted on: <%= posts[i].time %></p>
-        <p>Tags: 
-            <% for (let j = 0; j < posts[i].tags.length; j++) { %>
-                <a href="/viewTagPosts/<%= posts[i].tags[j]._id %>"><%= posts[i].tags[j].name %></a>
-                <% if (j !== posts[i].tags.length - 1) { %>, <% } %>
+  <header>
+    <h2 class="logo">LOGO</h2>
+    <nav class="navigation">
+      <a href="/create" role="button">Create Post</a>
+      <a href="/manageTags" role="button">Manage Tags</a>
+      <a href="/profile" role="button">User Profile</a>
+      <button onclick="window.location.href='/logout'" class="btn-LoginPopup">Logout</button>
+    </nav>
+  </header>
+
+  <div class="userProfile"> 
+    <h1>Welcome to Your Profile</h1>
+    <h2>Username: <%= user.username %></h2>
+
+    <h3>Your Posts:</h3>
+    <ul>
+      <% posts.forEach((post) => { %>
+        <li>
+          <h3><a href="/viewPost/<%= post._id %>"><%= post.title %></a></h3>
+          <p><%= post.description %></p>
+          <p>Author: <%= post.author.username %></p>
+          <p>Posted on: <%= post.time %></p>
+          <p>Tags: 
+            <% post.tags.forEach((tag, index) => { %>
+              <a href="/viewTagPosts/<%= tag._id %>"><%= tag.name %></a><%= index < post.tags.length - 1 ? ', ' : '' %>
+            <% }); %>
+          </p>
+          <p>Comments: <%= post.comments.length %></p>
+          <p>Votes: <span id="voteCount_<%= post._id %>"><%= post.votes %></span></p>
+          <div>
+            <% if (post.upvotes.includes(user._id)) { %>
+              <button id="upvoteButton_<%= post._id %>" class="upvoted" onclick="upvote('<%= post._id %>')">Upvote</button>
+            <% } else { %>
+              <button id="upvoteButton_<%= post._id %>" onclick="upvote('<%= post._id %>')">Upvote</button>
             <% } %>
-        </p>
-        <p>Comments: <%= posts[i].comments.length %></p>
-        <p>Votes: <span id="voteCount_<%= posts[i]._id %>"><%= posts[i].votes %></span></p>
-            <div>
-                <% if(posts[i].upvotes.includes(user._id)) { %>
-                    <button id="upvoteButton_<%= posts[i]._id %>" class="upvoted" onclick="upvote('<%= posts[i]._id %>')">Upvote</button>
-                <% } else { %>
-                    <button id="upvoteButton_<%= posts[i]._id %>" onclick="upvote('<%= posts[i]._id %>')">Upvote</button>
-                <% } %>
-                <% if(posts[i].upvotes.includes(user._id)) { %>
-                    <button id="downvoteButton_<%= posts[i]._id %>" class="downvoted" onclick="downvote('<%= posts[i]._id %>')">Downvote</button>
-                <% } else { %>
-                    <button id="downvoteButton_<%= posts[i]._id %>" onclick="downvote('<%= posts[i]._id %>')">Downvote</button>
-                <% } %>
-            </div>
+
+            <% if (post.downvotes && post.downvotes.includes(user._id)) { %>
+              <button id="downvoteButton_<%= post._id %>" class="downvoted" onclick="downvote('<%= post._id %>')">Downvote</button>
+            <% } else { %>
+              <button id="downvoteButton_<%= post._id %>" onclick="downvote('<%= post._id %>')">Downvote</button>
+            <% } %>
+          </div>
         </li>
-    <% } %>
-</ul>
-<script src="/javascript/userProfile.js"></script>
+      <% }); %>
+    </ul>
+  </div>
+
+  <script src="/javascript/userProfile.js"></script>
 </body>
 </html>

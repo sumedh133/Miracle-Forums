@@ -1,0 +1,272 @@
+/* Global Style */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+  }
+  
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url('background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    color: #333;
+    overflow-y: auto;
+  }
+  
+  /* Header Styling */
+  header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 20px 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+    z-index: 100;
+  }
+  
+  .logo {
+    font-size: 2em;
+  }
+  
+  .navigation a,
+  .navigation button {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 1.1em;
+  }
+  
+  /* Logout Button */
+  .logout-btn {
+    background-color: #182c3c;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .logout-btn:hover {
+    background-color: #3c5066;
+  }
+  .logo {
+    user-select: none;
+    font-size: 2em;
+  }
+  
+  .navigation a {
+    position: relative;
+    font-size: 1.1em;
+    color: white;
+    font-weight: 500;
+    margin-left: 50px;
+    text-decoration: none;
+  }
+  
+  .navigation a::after {
+    content: '';
+    position: absolute;
+    left: 0px;
+    bottom: -4px;
+    width: 100%;
+    height: 3px;
+    background: white;
+    border-radius: 5px;
+    transform: scaleX(0);
+    transition: transform 0.5s;
+  }
+  
+  .navigation a:hover::after {
+    transform: scaleX(1);
+  }
+  
+  .navigation .btn-LoginPopup {
+    width: 150px;
+    height: 50px;
+    background: transparent;
+    border: 2px solid white;
+    margin-left: 50px;
+    border-radius: 5px;
+    font-size: 1.1em;
+    color: white;
+    font-weight: 500;
+    transition: 0.5s;
+  }
+  
+  .navigation .btn-LoginPopup:hover {
+    background-color: aliceblue;
+    color: #162938;
+    border: 2px solid #162938;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* Main Content Container */
+  .manageTagsContainer {
+    max-width: 800px;
+    width: 100%;
+    margin: 120px auto 20px;
+    background-color: rgba(250, 249, 246, 0.9);
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  /* Search Bar Styling */
+  .searchTags {
+    margin-bottom: 20px;
+  }
+  
+  .searchTags label {
+    font-weight: bold;
+  }
+  
+  #tagInput {
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 5px;
+  }
+  
+  #suggestedTags {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+  }
+  
+  #suggestedTags li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+  }
+  
+  #suggestedTags li:hover {
+    background-color: #f0f0f0;
+  }
+  
+  /* Sort Options */
+  .sortOptions {
+    margin-top: 10px;
+  }
+  
+  .sortOptions label {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  .sortOptions select {
+    padding: 8px;
+    font-size: 1em;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  /* Flex Containers */
+  .flex-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .flex-container > .flex-box {
+    flex: 2;
+    min-width: 300px;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Add gap between elements inside the flex-box */
+    height: 100%; /* Ensures flex box takes full height of its container */
+    justify-content: space-between; /* Ensures the content is spaced out, with the button at the bottom */
+  }
+  
+  .flex-box h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  /* Table Styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: #f5f5f5;
+  }
+  
+  /* Button Styling */
+  button {
+    padding: 10px 15px;
+    font-size: 1em;
+    background-color: rgb(24, 44, 60); /* Updated button color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: auto; /* Ensure button stays at the bottom */
+    align-self:center; /* Center button within the flex container */
+  }
+  
+  button:hover {
+    background-color: #1e3a50; /* Slightly lighter shade for hover */
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  /* Responsive Styling */
+  @media (max-width: 768px) {
+    header {
+      padding: 20px;
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    header .navigation a,
+    header .navigation .btn-LoginPopup {
+      margin-left: 0;
+      margin-top: 10px;
+    }
+  
+    .manageTagsContainer {
+      width: 90%;
+    }
+  
+    .flex-container {
+      flex-direction: column;
+    }
+  
+    .flex-box {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+  }
+  
