@@ -17,8 +17,8 @@ router.get('/manageTags', async (req, res) => {
       return { ...tag, postCount, userCount };
     });
 
-    const savedSortOption = req.query.savedSort || 'recentSaved'; // Default to 'recentSaved' if not specified in the query
-    const unsavedSortOption = req.query.unsavedSort || 'recentUnsaved'; // Default to 'recentUnsaved' if not specified in the query
+    const savedSortOption = req.query.savedSort || 'recentSaved'; 
+    const unsavedSortOption = req.query.unsavedSort || 'recentUnsaved'; 
 
     let availableTags = tagsWithCounts.filter(tag => !preferredTags.includes(tag._id));
     let savedTags = tagsWithCounts.filter(tag => preferredTags.includes(tag._id));
@@ -28,7 +28,7 @@ router.get('/manageTags', async (req, res) => {
     } else if (savedSortOption === 'users') {
       savedTags = savedTags.sort((a, b) => b.userCount - a.userCount);
     } else {
-      // Default to sorting by most recent for saved tags
+      
       savedTags = savedTags.reverse();
     }
 
@@ -37,7 +37,7 @@ router.get('/manageTags', async (req, res) => {
     } else if (unsavedSortOption === 'users') {
       availableTags = availableTags.sort((a, b) => b.userCount - a.userCount);
     } else {
-      // Default to sorting by most recent for unsaved tags
+      
       availableTags = availableTags.reverse();
     }
 
@@ -106,17 +106,17 @@ router.get("/viewTagPosts/:tagId", async (req, res) => {
         const tagId = req.params.tagId;
         const tag= await Tag.findById(tagId);
 
-        // Retrieve the sorting option from the query parameters
-        const sortBy = req.query.sortBy || "recent"; // Default to sorting by most recent
+        
+        const sortBy = req.query.sortBy || "recent"; 
 
-        // Define the sort criteria
+        
         let sortCriteria = {};
         if (sortBy === "upvotes") {
-          sortCriteria = { votes: -1 }; // Sort by votes, descending order
+          sortCriteria = { votes: -1 }; 
         } else if (sortBy === "comments") {
-          sortCriteria = { comments_size: -1 }; // Sort by comment count, descending order
+          sortCriteria = { comments_size: -1 }; 
         } else {
-          sortCriteria = { time: -1 }; // Sort by date, descending order (most recent)
+          sortCriteria = { time: -1 }; 
         }
 
         const posts = await Post.aggregate([
@@ -176,8 +176,8 @@ router.post("/removeTag/:tagId", async (req, res) => {
 router.get('/suggestedTags', async (req, res) => {
   try {
     const input = req.query.input;
-    // Perform the tag suggestion logic here
-    // Fetch the suggested tags based on the input and send the response
+    
+    
     const suggestedTags = await Tag.find({ name: { $regex: input, $options: 'i' } }).lean();
     return res.json(suggestedTags);
   } catch (error) {
@@ -186,15 +186,15 @@ router.get('/suggestedTags', async (req, res) => {
   }
 });
 
-//suggesting tags whicle creating posts
+
 router.get('/tag/suggestions', async (req, res) => {
   try {
-    const searchText = req.query.searchText; // Get the entered text from the query parameter
+    const searchText = req.query.searchText; 
 
-    // Perform a search in the tags collection based on the entered text
+    
     const matchedTags = await Tag.find({ name: { $regex: searchText, $options: 'i' } });
 
-    res.json(matchedTags); // Return the matched tags as the response
+    res.json(matchedTags); 
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Error retrieving tag suggestions' });

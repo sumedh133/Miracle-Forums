@@ -1,4 +1,4 @@
-/* Global Style */
+
 * {
     margin: 0;
     padding: 0;
@@ -81,7 +81,7 @@
     cursor: pointer;
   }
   
-  /* Tag Posts Container */
+ 
   .tagPosts {
     max-width: 800px;
     width: 80%;
@@ -101,7 +101,7 @@
     color: #222;
   }
   
-  /* Align Save Tag and Sort By buttons to the left and right */
+ 
   .buttons-container {
     display: flex;
     justify-content: space-between;
@@ -110,16 +110,16 @@
   }
   
   .save-remove-tag, .sort-options {
-    flex: 1;  /* Makes both divs take up equal space */
+    flex: 1; 
   }
   
-  /* Remove margins from the individual button containers */
+ 
   .save-remove-tag {
-    text-align: left; /* Aligns the 'Save tag' button to the left */
+    text-align: left;
   }
   
   .sort-options {
-    text-align: right; /* Aligns the 'Sort By' button to the right */
+    text-align: right;
   }
   
   .sort-options select {
@@ -129,24 +129,24 @@
     border: 1px solid #ccc;
   }
   
-  /* Save Tag Button */
+ 
   .save-remove-tag button {
-    background-color: #182c3c; /* Button color */
-    color: white; /* Text color */
-    padding: 6px 10px; /* Increased size */
+    background-color: #182c3c;
+    color: white;
+    padding: 6px 10px;
     border-radius: 6px;
     border: none;
     cursor: pointer;
-    margin-top: 25px; /*Slightly move the button down */
-    font-size: 1.2em; /* Increase font size */
+    margin-top: 25px;
+    font-size: 1.2em;
     transition: background-color 0.3s ease;
   }
   
   .save-remove-tag button:hover {
-    background-color: #3c5066; /* Lighter color on hover */
+    background-color: #3c5066;
   }
   
-  /* Sort By Button */
+ 
   .sort-options button {
     background-color: #182c3c;
     color: white;
@@ -159,10 +159,10 @@
   }
   
   .sort-options button:hover {
-    background-color: #3c5066; /* Lighter color on hover */
+    background-color: #3c5066;
   }
   
-  /* Posts List */
+ 
   .posts-list {
     list-style: none;
     margin-top: 10px;

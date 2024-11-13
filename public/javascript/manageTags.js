@@ -1,4 +1,4 @@
-// Function to handle the change event of the saved tags sort option
+
 function handleSavedSortChange() {
     const selectedOption = document.getElementById('savedSortOption').value;
     const url = new URL(window.location.href);
@@ -6,7 +6,7 @@ function handleSavedSortChange() {
     window.location.href = url.toString();
   }
 
-  // Function to handle the change event of the unsaved tags sort option
+  
   function handleUnsavedSortChange() {
     const selectedOption = document.getElementById('unsavedSortOption').value;
     const url = new URL(window.location.href);
@@ -59,18 +59,18 @@ function handleSavedSortChange() {
     const input = event.target.value.trim();
     const suggestedTagsContainer = document.getElementById('suggestedTags');
 
-    // Clear the suggestion list
+    
     suggestedTagsContainer.innerHTML = '';
 
     if (input.length === 0) {
       return;
     }
 
-    // Fetch suggested tags from the server
+    
     fetch(`/suggestedTags?input=${input}`)
       .then(response => response.json())
       .then(data => {
-        // Display the suggested tags in the list
+        
         data.forEach(tag => {
           const listItem = document.createElement('li');
           const tagLink = document.createElement('a');
