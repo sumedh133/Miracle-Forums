@@ -1,0 +1,354 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+/* body {
+  background: whitesmoke
+} */
+
+.chatbot-toggler {
+  position: fixed;
+  bottom: 30px;
+  right: 53px;
+  outline: none;
+  border: none;
+  height: 80px;
+  width: 80px;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: whitesmoke;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+  transition: all 0.08s ease;
+}
+.chatbot .header-left {
+  display: flex;
+  margin-left: 10px;
+  top: 100px;
+}
+#dropdown-menu{
+  
+  border-radius: 5px;
+  background-color: rgb(25, 83, 111);
+}
+#chat{
+  position: fixed;
+  bottom: 30px;
+  right: 40px;
+  outline: none;
+  border: none;
+  height: 80px;
+  width: 110px;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+body.show-chatbot .chatbot-toggler {
+  transform: rotate(90deg);
+}
+.chatbot-toggler span {
+  color: #fff;
+  position: absolute;
+}
+.chatbot-toggler span:last-child,
+body.show-chatbot .chatbot-toggler span:first-child  {
+  opacity: 0;
+}
+body.show-chatbot .chatbot-toggler span:last-child {
+  opacity: 1;
+}
+.chatbot {
+  position: fixed;
+  right: 35px;
+  bottom: 90px;
+  width: 420px;
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.5);
+  transform-origin: bottom right;
+  box-shadow: 0 0 128px 0 rgba(0,0,0,0.1),
+              0 32px 64px -48px rgba(0,0,0,0.5);
+  transition: all 0.5s ease;
+}
+body.show-chatbot .chatbot {
+  opacity: 1;
+  right: 10px;
+  bottom: 10px;
+  pointer-events: auto;
+  transform: scale(1);
+}
+.chatbot header {
+  padding-bottom: 15px;
+  padding-top: 10px;
+  position: relative;
+  text-align: center;
+  color: #cc0707;
+  background: lightblue;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.chatbot header span {
+  position: absolute;
+ 
+  top: 50%;
+  transform: translateY(-50%);
+  right: 15px;
+}
+
+
+.minimize-chatbot {
+  font-size: 20px;
+  color: #333; 
+  margin-right: 10%;/* Adjust color as needed */
+}
+
+
+.close-btn {
+  font-size: 20px;
+  color: rgb(28, 17, 149);
+}
+
+
+
+
+.close-btn:hover {
+  color: darkred;
+}
+
+header h2 { 
+  font-size: 1.4rem;
+}
+.chatbot .chatbox {
+  overflow-y: auto;
+  height: 510px;
+  padding: 30px 20px 100px;
+}
+.chatbot :where(.chatbox, textarea)::-webkit-scrollbar {
+  width: 6px;
+}
+.chatbot :where(.chatbox, textarea)::-webkit-scrollbar-track {
+  background: #fff;
+  border-radius: 25px;
+}
+.chatbot :where(.chatbox, textarea)::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 25px;
+}
+.chatbox .chat {
+  display: flex;
+  list-style: none;
+}
+.chatbox .outgoing {
+  margin: 20px 0;
+  justify-content: flex-end;
+}
+#minimize{
+  cursor: pointer;
+}
+.chatbox .incoming span {
+  width: 32px;
+  height: 32px;
+  color: #fff;
+  cursor: default;
+  text-align: center;
+  line-height: 32px;
+  align-self: flex-end;
+  background:blue;
+  border-radius: 4px;
+  margin: 0 10px 7px 0;
+}
+.chatbox .chat p {
+  white-space: pre-wrap;
+  padding: 12px 16px;
+  border-radius: 10px 10px 0 10px;
+  max-width: 75%;
+  color: #fff;
+  font-size: 0.95rem;
+  background: blue;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.reset-btn {
+  background-color: lightblue;
+  border: none;
+  scale:1.2;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.chatbox .incoming{
+  padding-bottom: 10px;
+}
+.chatbox .incoming p {
+  border-radius: 10px 10px 10px 0;
+}
+.chatbox .chat p.error {
+  color: #721c24;
+  background: #f8d7da;
+}
+.chatbox .incoming p {
+  color: #000;
+  background: #f2f2f2;
+}
+.chatbot .chat-input {
+  display: flex;
+  gap: 5px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: #fff;
+  padding: 3px 20px;
+  border-top: 1px solid #ddd;
+}
+.chat-input textarea {
+  height: 55px;
+  width: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  max-height: 180px;
+  padding: 15px 15px 15px 0;
+  font-size: 0.95rem;
+}
+.chat-input span {
+  align-self: flex-end;
+  color:blue;
+  cursor: pointer;
+  height: 55px;
+  display: flex;
+  align-items: center;
+ 
+  font-size: 1.35rem;
+}
+.chat-input textarea:valid ~ span {
+  visibility: visible;
+}
+.imo{
+  z-index: 99999;
+}
+@media (max-width: 490px) {
+  .chatbot-toggler {
+    right: 20px;
+    bottom: 20px;
+  }
+  .chatbot {
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    border-radius: 0;
+    width: 100%;
+  }
+  .chatbot .chatbox {
+    height: 90%;
+    padding: 25px 15px 100px;
+  }
+  .chatbot .chat-input {
+    padding: 5px 15px;
+  }
+  .chatbot header span {
+    display: block;
+  }
+}
+
+
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.minimize-chatbot,
+.close-btn {
+  margin-left: 10px;
+  font-size: 20px;
+  color: #333;
+}
+
+
+
+
+
+.close-btn:hover {
+  color: red;
+}
+
+.chatbot {
+  position: fixed;
+  right: 35px;
+  bottom: 90px;
+  width: 420px;
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.5);
+  transform-origin: bottom right;
+  box-shadow: 0 0 128px 0 rgba(0,0,0,0.1),
+              0 32px 64px -48px rgba(0,0,0,0.5);
+  transition: all 0.5s ease;
+  z-index: 999;
+}
+
+body.show-chatbot .chatbot {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+.chatbot-toggler.toggled {
+  top: 50px;
+}
+.chatbot.toggled .header {
+  padding-top: 110px;
+}
+.close-btn img {
+  width: 25px;
+  height: 25px;
+  display: block;
+  margin: auto;
+}
+.chatbot-img {
+  width: 50px;
+  height: 50px;
+
+ margin-bottom: -14px;
+ margin-right: 5px;
+  border-radius: 60%;
+
+  background-color: #fff;
+ 
+}
+#dropdown-menu {
+  background-color: rgb(178, 213, 243);
+ 
+}
+
+#dropdown-menu option {
+  background-color: lightgray;
+ 
+}
+
+.close-btn button,
+.close-btn img {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+.close-btn button {
+    margin-right: 0px;
+}
