@@ -1,3 +1,6 @@
+const postDataElement = document.getElementById('post-data');
+const postTitle = postDataElement.getAttribute('data-title');
+const postDescription = postDataElement.getAttribute('data-description');
 
 function upvotePost(postId) {
     const upvoteButton = document.getElementById(`upvoteButton_${postId}`);
@@ -165,4 +168,79 @@ function toggleReplies(commentId) {
     replyFormContainer.style.display = 'none';
   }
 }
-  
+
+const fetchPredictionScore = async (inputText) => {
+  try {
+    const response = await fetch('http://127.0.0.1:5000/predict_score', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ post_title: postTitle,
+        post_content: postDescription}),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (data && data.prediction_score !== undefined) {
+      return data.prediction_score;
+    } else {
+      throw new Error("Invalid response format or missing 'prediction_score' property.");
+    }
+  } catch (error) {
+    console.error('Error fetching prediction score:', error);
+    throw error; 
+  }
+};
+
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const numberBox = document.getElementById("numberBox");
+
+  try {
+    // Wait for the prediction score to be fetched
+    const targetValue = await fetchPredictionScore();
+    console.log(targetValue);
+
+    if (isNaN(targetValue)) {
+      console.error("The fetched target value is not a valid number.");
+      return;
+    }
+
+    let counter = 0;
+
+    const updateNumberBox = () => {
+      if (counter < targetValue) {
+        counter++;
+        numberBox.textContent = counter;
+
+        // Update styles based on counter value
+        if (counter >= 80) {
+          numberBox.style.backgroundColor = "green";
+          numberBox.style.color = "white";
+        } else if (counter <= 25) {
+          numberBox.style.backgroundColor = "red";
+          numberBox.style.color = "white";
+        } else {
+          numberBox.style.backgroundColor = "yellow";
+          numberBox.style.color = "black";
+        }
+      } else {
+        // Stop the interval when counter reaches the target value
+        clearInterval(intervalId);
+      }
+    };
+
+    const intervalId = setInterval(updateNumberBox, 30);
+
+  } catch (error) {
+    console.error('Failed to fetch target value:', error);
+  }
+});
+
+
+

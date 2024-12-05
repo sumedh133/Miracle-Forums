@@ -4,10 +4,19 @@ const chatbox = document.querySelector(".chatbox");
 const chatInput = document.querySelector(".chat-input textarea");
 const sendChatBtn = document.querySelector("#send-btn");
 const micBtn=document.querySelector('#mic-btn');
-let selectedModel="NLTK";
-let userId=Math.floor(Math.random()*(1000-100+1)+100);
+// const postDataElement = document.getElementById('post-data');
+// const postTitle = postDataElement.getAttribute('data-title');
+// const postDescription = postDataElement.getAttribute('data-description');
 
 let userMessage = ""; 
+let conversationHistory = [];
+
+const addMessageToHistory = (message, type) => {
+    conversationHistory.push({
+        message: message,
+        type: type, 
+    });
+};
 const inputInitHeight = chatInput.scrollHeight;
 
 const createChatLi = (message, className) => {
@@ -24,48 +33,50 @@ const resetBtn = document.querySelector(".reset-btn");
 resetBtn.addEventListener("click", () => {
     chatbox.innerHTML = ""; 
     const initialMessage = "Hi there, FactFinder here... \nHow can I help you today?";
+    conversationHistory=[];
     const initialMessageElement = createChatLi(initialMessage, "incoming");
     chatbox.appendChild(initialMessageElement);
-    userId++;
-    console.log(userId);
 }); 
 
 const generateResponse = (chatElement) => {
-  const thinkingMessage = chatElement.querySelector("p");
-  thinkingMessage.textContent = "Thinking";
-  let dots = 0;
+    const thinkingMessage = chatElement.querySelector("p");
+    thinkingMessage.textContent = "Thinking";
+    let dots = 0;
 
-  const intervalId = setInterval(() => {
-      dots = (dots + 1) % 4; 
-      thinkingMessage.textContent = "Thinking" + ".".repeat(dots); 
-  }, 400); 
+    const intervalId = setInterval(() => {
+        dots = (dots + 1) % 4; 
+        thinkingMessage.textContent = "Thinking" + ".".repeat(dots); 
+    }, 400); 
 
-  if(selectedModel=="NLTK"){
-    fetch('http://127.0.0.1:5000/NLTK_1', {
+    fetch('https://check-production-bddb.up.railway.app//misinfo_chatbot', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+            'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ message: userMessage })
+        body: JSON.stringify({
+            post_title: postTitle,
+            post_content: postDescription, 
+            query: userMessage,
+            conversation_history: conversationHistory
+        })
     }).then(response => {
         return new Promise(resolve => setTimeout(resolve, 2000)).then(() => response.json());
     }).then(data => {
-        console.log(data);
         clearInterval(intervalId); 
         if (data && data.response) {
             thinkingMessage.textContent = data.response; 
+            addMessageToHistory(data.response, "bot");
             chatbox.scrollTo(0, chatbox.scrollHeight);
         } else {
-            console.log(data);
-            console.error("Invalid response format or missing 'text' property.");
+            console.error("Invalid response format or missing 'response' property.");
+            thinkingMessage.textContent = "Sorry, I couldn't process your request.";
         }
     }).catch(error => {
         clearInterval(intervalId); 
         console.error('Error:', error);
+        thinkingMessage.textContent = "An error occurred. Please try again.";
     });
-  }
-  
-}
+};
 
 const handleChat = () => {
     userMessage = chatInput.value.trim();
@@ -74,6 +85,7 @@ const handleChat = () => {
     chatInput.value = "";
     chatInput.style.height = `${inputInitHeight}px`;
 
+    addMessageToHistory(userMessage, "user");
     chatbox.appendChild(createChatLi(userMessage, "outgoing"));
     chatbox.scrollTo(0, chatbox.scrollHeight);
     
@@ -145,14 +157,3 @@ sendChatBtn.addEventListener("click", () => {
 closeBtn.addEventListener("click", () => document.body.classList.remove("show-chatbot"));
 chatbotToggler.addEventListener("click", () => document.body.classList.toggle("show-chatbot")); 
 
-document.getElementById("dropdown-menu").addEventListener("change", function() {
-    selectedModel = this.value; 
-    chatbox.innerHTML = ""; 
-    const initialMessage = "Hi there, Unibot here... \nHow can I help you today?";
-    const initialMessageElement = createChatLi(initialMessage, "incoming");
-    chatbox.appendChild(initialMessageElement);
-    const switchMessage = `Model switched to ${selectedModel}`;
-    chatbox.appendChild(createChatLi(switchMessage, "incoming"));
-    userId++;
-    console.log(userId);
-});

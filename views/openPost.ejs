@@ -27,7 +27,10 @@
   <div class="main-container">
     <!-- Post Details Section -->
     <div class="post-details">
-      <h1><%= post.title %></h1>
+      <h1>
+        <%= post.title %> 
+        <span class="number-box" id="numberBox">60</span>
+      </h1>
       <p>Description: <%= post.description %></p>
       <p>Author: <%= post.author.username %></p>
       <p>Posted on: <%= post.time %></p>
@@ -87,6 +90,11 @@
       </form>
     </div>
   </div>
+  <div id="post-data" 
+      data-title="<%= post.title %>" 
+      data-description="<%= post.description %>">
+  </div>
+
   <main class="main">
     <button class="chatbot-toggler">
         <span class="material-symbols-rounded"><img src="/css/Chatbot.png" id="chat"></span>
