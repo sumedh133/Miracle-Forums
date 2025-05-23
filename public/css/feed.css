@@ -1,0 +1,250 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: verdana, arial, helvetica, sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-image: url('background.jpg'); 
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  overflow-y: hidden;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 20px 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff; 
+  z-index: 100; 
+}
+
+.logo {
+  user-select: none;
+  font-size: 2em;
+}
+
+.navigation a {
+  position: relative;
+  font-size: 1.1em;
+  color: white;
+  font-weight: 500;
+  margin-left: 50px;
+  text-decoration: none;
+}
+
+.navigation a::after {
+  content: '';
+  position: absolute;
+  left: 0px;
+  bottom: -4px;
+  width: 100%;
+  height: 3px;
+  background: white;
+  border-radius: 5px;
+  transform: scaleX(0);
+  transition: transform 0.5s;
+}
+
+.navigation a:hover::after {
+  transform: scaleX(1);
+}
+
+.navigation .btn-LoginPopup {
+  width: 150px;
+  height: 50px;
+  background: transparent;
+  border: 2px solid white;
+  margin-left: 50px;
+  border-radius: 5px;
+  font-size: 1.1em;
+  color: white;
+  font-weight: 500;
+  transition: 0.5s;
+}
+
+.navigation .btn-LoginPopup:hover {
+  background-color: aliceblue;
+  color: #162938;
+  border: 2px solid #162938;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.feed {
+  max-width: 800px;
+  width: 80%;
+  margin: 120px auto 20px; /* Adjust the top margin to create space below the header */
+  background-color: rgba(250, 249, 246, 0.95);
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow-y: auto; /* Enable vertical scrolling for the feed */
+  max-height: calc(100vh - 140px); /* Adjust the max-height to fit the remaining viewport height */
+}
+
+.feed h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.feed::-webkit-scrollbar {
+  width: 16px;
+}
+
+.feed::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.feed::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.feed::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.feed::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+
+
+.sort-options {
+  margin-bottom: 20px;
+}
+
+.sort-options label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.sort-options select {
+  padding: 5px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+}
+
+ul {
+  list-style: none;
+}
+
+li {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+li:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+li h3 {
+  font-size: 20px;
+  margin-bottom: 5px;
+  color: #333; /* Set the color of the post title */
+}
+
+li p {
+  margin-bottom: 5px;
+  color: #555; /* Set the color of the post content */
+}
+
+li p:last-child {
+  margin-bottom: 10px;
+}
+
+li a {
+  color: #333;
+  text-decoration: none;
+}
+
+li a:hover {
+  text-decoration: underline;
+}
+
+li p.tags a {
+  color: #555;
+  text-decoration: none;
+}
+
+li p.tags a:hover {
+  text-decoration: underline;
+}
+
+.comment-count {
+  color: #888;
+}
+
+.vote-count {
+  color: #888;
+  font-weight: bold;
+}
+
+button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 3px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  background-color: #555; /* Darker background color */
+  transition: transform 0.2s ease-in-out; /* Add transition for pop-up effect */
+}
+
+button.upvoted {
+  background-color: #3d9e59; /* Darker background color for upvoted button */
+  margin-right: 5px;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+button.downvoted {
+  background-color: #a84b41; /* Darker background color for downvoted button */
+  margin-right: 5px;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+button i {
+  color: #fff;
+}
+
+button:hover {
+  opacity: 0.8;
+  transform: scale(1.1); /* Add pop-up effect on hover */
+}
+.feedTop{
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 600px) {
+  .feed {
+    padding: 10px;
+  }
+
+  li {
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+  }
+
+  li h3 {
+    font-size: 18px;
+  }
+}

@@ -1,0 +1,172 @@
+/* Global Style */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: verdana, arial, helvetica, sans-serif;
+  }
+  
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url('background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    overflow-y: hidden;
+    color: #333; /* Set default text color */
+  }
+  
+  header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 20px 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+    z-index: 100;
+  }
+  
+  .logo {
+    user-select: none;
+    font-size: 2em;
+  }
+  
+  .navigation a {
+    position: relative;
+    font-size: 1.1em;
+    color: white;
+    font-weight: 500;
+    margin-left: 50px;
+    text-decoration: none;
+  }
+  
+  .navigation a::after {
+    content: '';
+    position: absolute;
+    left: 0px;
+    bottom: -4px;
+    width: 100%;
+    height: 3px;
+    background: white;
+    border-radius: 5px;
+    transform: scaleX(0);
+    transition: transform 0.5s;
+  }
+  
+  .navigation a:hover::after {
+    transform: scaleX(1);
+  }
+  
+  .navigation .btn-LoginPopup {
+    width: 150px;
+    height: 50px;
+    background: transparent;
+    border: 2px solid white;
+    margin-left: 50px;
+    border-radius: 5px;
+    font-size: 1.1em;
+    color: white;
+    font-weight: 500;
+    transition: 0.5s;
+  }
+  
+  .navigation .btn-LoginPopup:hover {
+    background-color: aliceblue;
+    color: #162938;
+    border: 2px solid #162938;
+    cursor: pointer;
+  }
+  
+  .userProfile {
+    max-width: 800px;
+    width: 80%;
+    margin: 120px auto 20px;
+    background-color: rgba(250, 249, 246, 0.9); /* Adjusted opacity for better readability */
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    overflow-y: auto;
+    max-height: calc(100vh - 140px);
+    color: #333;
+  }
+  
+  
+  .userProfile h1 {
+    font-size: 28px;
+    font-weight: bold;
+    /* margin-bottom: 15px; */
+    color: #222;
+    position: relative;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  
+  
+  .userProfile h2, .userProfile h3 {
+    font-size: 20px;
+    color: #444;
+  }
+  
+  .userProfile ul {
+    list-style: none;
+    margin-top: 10px;
+  }
+  
+  .userProfile li {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .userProfile a {
+    color: #0066cc;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  
+  .userProfile a:hover {
+    text-decoration: underline;
+  }
+  
+  .userProfile p {
+    margin-top: 5px;
+    color: #555;
+  }
+  
+  .userProfile .upvoted {
+    color: red;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .userProfile .downvoted {
+    color: blue;
+    cursor: pointer;
+  }
+  
+  .userProfile .vote-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .userProfile .vote-buttons button {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+  }
+  
+  .userProfile .vote-buttons button:hover {
+    background-color: #f0f0f0;
+  }
+  

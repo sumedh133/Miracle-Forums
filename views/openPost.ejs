@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Post</title>
+  <link rel="stylesheet" href="/css/openPost.css">
+  <link rel="stylesheet" href="/css/bot.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
+</head>
+<body>
+
+  <header>
+    <a href="/feed" style="text-decoration: none;">
+      <h2 class="logo" style="color: white; margin: 0;">TextNest</h2>
+    </a>
+    <nav class="navigation">
+      <a href="/create" role="button">Create Post</a>
+      <a href="/manageTags" role="button">Manage Tags</a>
+      <a href="/profile" role="button">User Profile</a>
+      <button onclick="window.location.href='/logout'" class="btn-LoginPopup logout-btn">Logout</button>
+    </nav>
+  </header>
+
+  <div class="main-container">
+    <!-- Post Details Section -->
+    <div class="post-details">
+      <h1>
+        <%= post.title %> 
+        <span class="number-box" id="numberBox">Loading...</span>
+        <span class="label-box" id="labelBox"></span>
+      </h1>
+      <p>Description: <%= post.description %></p>
+      <p>Author: <%= post.author.username %></p>
+      <p>Posted on: <%= post.time %></p>
+      <p>Tags:
+        <% for (let j=0; j < post.tags.length; j++) { %>
+          <a href="/viewTagPosts/<%= post.tags[j]._id %>"><%= post.tags[j].name %></a>
+          <% if (j !== post.tags.length - 1) { %>, <% } %>
+        <% } %>
+      </p>
+      <p>Votes: <span id="voteCount_<%= post._id %>"><%= post.votes %></span></p>
+      
+      <div class="vote-buttons">
+        <button id="upvoteButton_<%= post._id %>" class="<%= checkUp == 1 ? 'upvoted' : '' %>" onclick="upvotePost('<%= post._id %>')">Upvote</button>
+        <button id="downvoteButton_<%= post._id %>" class="<%= checkDown == 1 ? 'downvoted' : '' %>" onclick="downvotePost('<%= post._id %>')">Downvote</button>
+      </div>
+    </div>
+
+    <!-- Comments Section -->
+    <div class="comments-section">
+      <h3>Comments</h3>
+      <ul class="comments-list">
+        <% post.comments.forEach(function(comment) { %>
+          <li class="comment-item">
+            <p><%= comment.content %></p>
+            <p>Author: <%= comment.author.username %> | Posted on: <%= comment.time %></p>
+            <p>Votes: <span id="voteCount_<%= comment._id %>"><%= comment.votes %></span></p>
+            
+            <div class="vote-buttons">
+              <button id="upvoteButton_<%= comment._id %>" class="<%= comment.upvotes.includes(user._id) ? 'upvoted' : '' %>" onclick="upvoteComment('<%= comment._id %>')">Upvote</button>
+              <button id="downvoteButton_<%= comment._id %>" class="<%= comment.downvotes.includes(user._id) ? 'downvoted' : '' %>" onclick="downvoteComment('<%= comment._id %>')">Downvote</button>
+            </div>
+
+            <!-- Replies Section -->
+            <button class="viewRepliesButton" onclick="toggleReplies('<%= comment._id %>')">View Replies</button>
+            <div id="replies_<%= comment._id %>" class="replies" style="display: none;">
+              <% if (comment.replies && comment.replies.length > 0) { %>
+                <% comment.replies.forEach(reply => { %>
+                  <div class="reply" data-reply-id="<%= reply._id %>">
+                    <p><%= reply.author.username %>: <%= reply.content %></p>
+                  </div>
+                <% }) %>
+              <% } %>
+              <form class="replyForm" action="/comments/<%= comment._id %>/reply" method="POST">
+                <textarea name="replyContent" required placeholder="Write your reply here"></textarea>
+                <button type="submit">Submit Reply</button>
+              </form>
+            </div>
+          </li>
+        <% }) %>
+      </ul>
+
+      <!-- Comment Form -->
+      <h4>Add a Comment</h4>
+      <form id="comment-form" method="POST" action="/submitComment/<%= post._id %>">
+        <textarea required name="commentContent" placeholder="Write your comment"></textarea>
+        <button type="submit" class="submit-comment-btn">Submit Comment</button>
+      </form>
+    </div>
+  </div>
+  <div id="post-data" 
+      data-title="<%= post.title %>" 
+      data-description="<%= post.description %>">
+  </div>
+
+  <main class="main">
+    <button class="chatbot-toggler">
+        <span class="material-symbols-rounded"><img src="/css/Chatbot.png" id="chat"></span>
+        <span class="material-symbols-outlined"><img src="/css/icons8-close-40.png" id="closechat"></span>
+    </button>
+    <div class="chatbot">
+        <header class="header">
+            <div class="header-left"> </div>
+          
+            <h2> <img src="/css/pngwing.com.png" alt="FactFinder" class="chatbot-img">FactFinder</h2>
+            
+            <div class="header-right">
+               <span class="close-btn material-symbols-outlined">
+                <img class="reset-btn" src="/css/refresh.png">
+                <img src="/css/minus.png" id="minimize">
+            </span>
+            
+            </div>
+
+        </header>
+
+        <ul class="chatbox">
+            <li class="chat incoming">
+                <span class="material-symbols-outlined">smart_toy</span>
+                <p>Hi there, FactFinder here...<br>How can I help you today?</p>
+            </li>
+        </ul>
+
+        <div class="chat-input">
+            <textarea placeholder="Enter a message..." spellcheck="false" required></textarea>
+            <span id="mic-btn" class="material-symbols-rounded" title="speech">mic</span>
+            <span id="send-btn" class="material-symbols-rounded" title="submit">send</span>
+        </div>
+    </div>
+    <a href="#" class="scrollup" id="scroll-up">
+        <i class="ri-arrow-up-line scrollup__icon"></i>
+    </a>
+</main>
+
+  <script src="/javascript/openPost.js"></script>
+  <script src="/javascript/bot.js"></script>
+</body>
+</html>

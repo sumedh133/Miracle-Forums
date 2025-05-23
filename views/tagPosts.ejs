@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tag Posts</title>
+  <link rel="stylesheet" href="/css/tagPosts.css">
+</head>
+<body>
+  <header>
+    <a href="/feed" style="text-decoration: none;">
+      <h2 class="logo" style="color: white; margin: 0;">TextNest</h2>
+    </a>
+    <nav class="navigation">
+      <a href="/create" role="button">Create Post</a>
+      <a href="/manageTags" role="button">Manage Tags</a>
+      <a href="/profile" role="button">User Profile</a>
+      <button onclick="window.location.href='/logout'" class="btn-LoginPopup">Logout</button>
+    </nav>
+  </header>
+
+  <div class="tagPosts">
+    <h1>Posts associated with tag: <%= tag.name %></h1>
+
+    <div class="save-remove-tag">
+      <% if (user.preferredTags.includes(tag._id)) { %>
+        <form class="tagForm" id="removeButtonForm" action="/removeTag/<%= tag._id %>" method="POST">
+          <button type="submit">Remove tag</button>
+        </form>
+      <% } else { %>
+        <form class="tagForm" id="saveButtonForm" action="/saveTag/<%= tag._id %>" method="POST">
+          <button type="submit">Save tag</button>
+        </form>
+      <% } %>
+    </div>
+
+    <div class="sort-options">
+      <label for="sortSelect">Sort By:</label>
+      <select id="sortSelect" onchange="sortPosts(this.value)">
+        <option value="recent" <%= (sortBy === "recent") ? "selected" : "" %>>Most Recent</option>
+        <option value="upvotes" <%= (sortBy === "upvotes") ? "selected" : "" %>>Most Upvotes</option>
+        <option value="comments" <%= (sortBy === "comments") ? "selected" : "" %>>Most Comments</option>
+      </select>
+    </div>
+
+    <ul class="posts-list">
+      <% posts.forEach(function(post) { %>
+        <li>
+          <h3><a href="/viewPost/<%= post._id %>"><%= post.title %></a></h3>
+          <p><%= post.description %></p>
+          <p>Author: <%= post.author.username %></p>
+          <p>Posted on: <%= post.time %></p>
+          <p>Tags:
+            <% post.tags.forEach(function(tag, index) { %>
+              <a href="/viewTagPosts/<%= tag._id %>"><%= tag.name %></a><%= index < post.tags.length - 1 ? ', ' : '' %>
+            <% }) %>
+          </p>
+          <p>Comments: <%= post.comments.length %></p>
+          <p>Votes: <span id="voteCount_<%= post._id %>"><%= post.votes %></span></p>
+          <div class="vote-buttons">
+            <% if (post.upvotes.includes(user._id)) { %>
+              <button id="upvoteButton_<%= post._id %>" class="upvoted" onclick="upvote('<%= post._id %>')">Upvote</button>
+            <% } else { %>
+              <button id="upvoteButton_<%= post._id %>" onclick="upvote('<%= post._id %>')">Upvote</button>
+            <% } %>
+
+            <% if (post.downvotes && post.downvotes.includes(user._id)) { %>
+              <button id="downvoteButton_<%= post._id %>" class="downvoted" onclick="downvote('<%= post._id %>')">Downvote</button>
+            <% } else { %>
+              <button id="downvoteButton_<%= post._id %>" onclick="downvote('<%= post._id %>')">Downvote</button>
+            <% } %>
+          </div>
+        </li>
+      <% }); %>
+    </ul>
+  </div>
+
+  <script src="/javascript/tagPosts.js"></script>
+</body>
+</html>

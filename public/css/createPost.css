@@ -1,0 +1,188 @@
+/* Updated */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: verdana, arial, helvetica, sans-serif;
+}
+
+.navigation a,
+  .navigation button {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 1.1em;
+  }
+  
+  /* Logout Button */
+  .logout-btn {
+    background-color: #182c3c;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .logout-btn:hover {
+    background-color: #3c5066;
+  }
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-image: url('background.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  overflow-y: hidden;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 20px 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+  z-index: 100;
+}
+
+.logo {
+  user-select: none;
+  font-size: 2em;
+}
+
+.navigation a {
+  position: relative;
+  font-size: 1.1em;
+  color: white;
+  font-weight: 500;
+  margin-left: 50px;
+  text-decoration: none;
+}
+
+.navigation a::after {
+  content: '';
+  position: absolute;
+  left: 0px;
+  bottom: -4px;
+  width: 100%;
+  height: 3px;
+  background: white;
+  border-radius: 5px;
+  transform: scaleX(0);
+  transition: transform 0.5s;
+}
+
+.navigation a:hover::after {
+  transform: scaleX(1);
+}
+
+.navigation .btn-LoginPopup {
+  width: 150px;
+  height: 50px;
+  background: transparent;
+  border: 2px solid white;
+  margin-left: 50px;
+  border-radius: 5px;
+  font-size: 1.1em;
+  color: white;
+  font-weight: 500;
+  transition: 0.5s;
+}
+
+.navigation .btn-LoginPopup:hover {
+  background-color: aliceblue;
+  color: #162938;
+  border: 2px solid #162938;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.post {
+  max-width: 800px; /* Wider maximum width */
+  width: 90%; /* Occupy 90% of the viewport width */
+  margin: 140px auto 20px; /* Adjusted top margin for space below header */
+  background-color: rgba(255, 255, 255, 0.95); /* Slightly opaque white background */
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  max-height: calc(100vh - 160px); /* Ensure space below header */
+  text-align: left; /* Align content to the left */
+}
+
+.post h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #444;
+}
+
+/* Form styling */
+form div {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+label {
+  font-size: 14px;
+  color: #666;
+  display: block;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+#tagSuggestions {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #888;
+}
+
+p {
+  font-size: 12px;
+  color: #666;
+  margin-top: 5px;
+}
+
+/* Submit button */
+button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #3b82f6;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #2563eb;
+}

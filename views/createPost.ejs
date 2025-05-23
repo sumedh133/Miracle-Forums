@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/css/createPost.css">
+</head>
+
+<body>
+  <header>
+    <a href="/feed" style="text-decoration: none;">
+      <h2 class="logo" style="color: white; margin: 0;">TextNest</h2>
+    </a>
+    <nav class="navigation">
+      <a href="/create" role="button">Create Post</a>
+      <a href="/manageTags" role="button">Manage Tags</a>
+      <a href="/profile" role="button">User Profile</a>
+      <button href="/logout" class="btn-LoginPopup">Logout</button>
+    </nav>
+  </header>
+  <div class="post">
+    <h1>Create a New Post</h1>
+
+    <form action="/create" method="POST">
+      <div>
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+      </div>
+      <div>
+        <label for="tags">Tags:</label>
+        <input type="text" id="tagInput" name="tags" required>
+        <div id="tagSuggestions"></div>
+        <p>Enter comma-separated tags (e.g., tag1, tag2, tag3)</p>
+        <p>If the tag you want is not present already then it will be created for you</p>
+      </div>
+      <div>
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required></textarea>
+      </div>
+      <div>
+        <button type="submit">Create Post</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="/javascript/createPost.js"></script>
+</body>
+
+</html>

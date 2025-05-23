@@ -1,0 +1,218 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: verdana, arial, helvetica, sans-serif;
+  }
+  
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    background-image: url('background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    color: #333;
+  }
+  
+  header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 20px 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+    z-index: 100;
+  }
+  
+  .logo {
+    user-select: none;
+    font-size: 2em;
+  }
+  
+  .navigation a {
+    position: relative;
+    font-size: 1.1em;
+    color: white;
+    font-weight: 500;
+    margin-left: 50px;
+    text-decoration: none;
+  }
+  
+  .navigation a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 100%;
+    height: 3px;
+    background: white;
+    border-radius: 5px;
+    transform: scaleX(0);
+    transition: transform 0.5s;
+  }
+  
+  .navigation a:hover::after {
+    transform: scaleX(1);
+  }
+  
+  .navigation .btn-LoginPopup {
+    width: 150px;
+    height: 50px;
+    background: transparent;
+    border: 2px solid white;
+    margin-left: 50px;
+    border-radius: 5px;
+    font-size: 1.1em;
+    color: white;
+    font-weight: 500;
+    transition: 0.5s;
+  }
+  
+  .navigation .btn-LoginPopup:hover {
+    background-color: aliceblue;
+    color: #162938;
+    border: 2px solid #162938;
+    cursor: pointer;
+  }
+  
+ 
+  .tagPosts {
+    max-width: 800px;
+    width: 80%;
+    margin: 120px auto 20px;
+    background-color: rgba(250, 249, 246, 0.9);
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    overflow-y: auto;
+    max-height: calc(100vh - 140px);
+  }
+  
+  .tagPosts h1 {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    color: #222;
+  }
+  
+ 
+  .buttons-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .save-remove-tag, .sort-options {
+    flex: 1; 
+  }
+  
+ 
+  .save-remove-tag {
+    text-align: left;
+  }
+  
+  .sort-options {
+    text-align: right;
+  }
+  
+  .sort-options select {
+    padding: 5px;
+    font-size: 1em;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+ 
+  .save-remove-tag button {
+    background-color: #182c3c;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    margin-top: 25px;
+    font-size: 1.2em;
+    transition: background-color 0.3s ease;
+  }
+  
+  .save-remove-tag button:hover {
+    background-color: #3c5066;
+  }
+  
+ 
+  .sort-options button {
+    background-color: #182c3c;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+  }
+  
+  .sort-options button:hover {
+    background-color: #3c5066;
+  }
+  
+ 
+  .posts-list {
+    list-style: none;
+    margin-top: 10px;
+  }
+  
+  .posts-list li {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .posts-list a {
+    color: #0066cc;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  
+  .posts-list a:hover {
+    text-decoration: underline;
+  }
+  
+  .posts-list p {
+    margin-top: 5px;
+    color: #555;
+  }
+  
+  .vote-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .vote-buttons button {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+  }
+  
+  .vote-buttons button:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .upvoted {
+    color: red;
+  }
+  
+  .downvoted {
+    color: blue;
+  }
+  

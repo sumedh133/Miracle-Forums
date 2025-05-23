@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feed page</title>
+    <link rel="stylesheet" href="/css/feed.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+</head>
+<body>
+    <header>
+        <a href="/feed" style="text-decoration: none;">
+            <h2 class="logo" style="color: white; margin: 0;">TextNest</h2>
+          </a>
+        <nav class="navigation">
+            <a href="/create" role="button">Create post</a>
+            <a href="/manageTags" role="button">Manage Tags</a>
+            <a href="/profile" role="button">User profile</a>
+            <button class="btn-LoginPopup" onclick="window.location.href='/logout'">Logout</button>
+        </nav>
+    </header>
+    <div class="feed">
+        <div class="feedTop">
+            <h1>User Feed</h1>
+            <div class="sort-options">
+                <label for="sortSelect">Sort By:</label>
+                <select id="sortSelect" onchange="sortPosts(this.value)">
+                    <option value="recent" <%= (sortBy === "recent") ? "selected" : "" %>>Most Recent</option>
+                    <option value="upvotes" <%= (sortBy === "upvotes") ? "selected" : "" %>>Most Upvotes</option>
+                    <option value="comments" <%= (sortBy === "comments") ? "selected" : "" %>>Most Comments</option>
+                </select>
+            </div>
+        </div>
+        <br>
+        <ul>
+            <% if(feed.length==0) { %>
+                <p>Please save some tags to view posts in the feed</p>
+            <% } %>
+            <% for (let i = 0; i < feed.length; i++) { %>
+            <li>
+                <h3><a href="/viewPost/<%= feed[i]._id %>"><%= feed[i].title %></a></h3>
+                <p><%= feed[i].description %></p>
+                <br>
+                <p><b>Author:</b> <%= feed[i].author.username %></p>
+                <p><b>Posted on:</b> <%= feed[i].time.toDateString() %> <%= feed[i].time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></p>
+                <p><b>Tags:</b>
+                    <% for (let j = 0; j < feed[i].tags.length; j++) { %>
+                        <a href="/viewTagPosts/<%= feed[i].tags[j]._id %>"><%= feed[i].tags[j].name %></a>
+                        <% if (j !== feed[i].tags.length - 1) { %>, <% } %>
+                    <% } %>
+                </p>
+                <p></p>
+                <div class="vote-section">
+                    <div class="vote-buttons">
+                      <% const userUpvoted = feed[i].upvotes.some((upvote) => upvote._id.equals(user._id)); %>
+                      <% const userDownvoted = feed[i].downvotes.some((downvote) => downvote._id.equals(user._id)); %>
+                  
+                      <% if (userUpvoted) { %>
+                        <button id="upvoteButton_<%= feed[i]._id %>" class="upvoted" onclick="upvote('<%= feed[i]._id %>')"><i class="fa-regular fa-circle-up"></i></i></i></i></i></i></button>
+                      <% } else { %>
+                        <button id="upvoteButton_<%= feed[i]._id %>" onclick="upvote('<%= feed[i]._id %>')"><i class="fa-regular fa-circle-up"></i></i></i></i></i></i></button>
+                      <% } %>
+                      <span id="voteCount_<%= feed[i]._id %>" class="vote-count"><%= feed[i].votes %></span>
+                      <% if (userDownvoted) { %>
+                        <button id="downvoteButton_<%= feed[i]._id %>" class="downvoted" onclick="downvote('<%= feed[i]._id %>')"><i class="fa-regular fa-circle-down"></i></i></i></button>
+                      <% } else { %>
+                        <button id="downvoteButton_<%= feed[i]._id %>" onclick="downvote('<%= feed[i]._id %>')"><i class="fa-regular fa-circle-down"></i></i></i></button>
+                      <% } %>
+                    </div>  
+                </div>    
+            </li>
+            <% } %>
+        </ul>
+    </div>
+    <script src="/javascript/feed.js"></script>
+    <script src="https://kit.fontawesome.com/49fa4d7a51.js" crossorigin="anonymous"></script>
+</body>
+</html>
